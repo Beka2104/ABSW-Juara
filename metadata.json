@@ -1,0 +1,11 @@
+{
+  "name": "ABSW Juara",
+  "description": "Sistem Manajemen Ekstrakurikuler SMAIT As-Syifa Boarding School Wanareja untuk mengelola aktivitas, presensi, penilaian pelatih, SOP, rapat, dan dokumentasi secara digital.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
