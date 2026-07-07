@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Plus, Search, Edit2, Trash2, X, Check, User, Activity, Phone, Mail, Home, MapPin, Clock, BookOpen, DollarSign, Target, Key, Info, Download } from "lucide-react";
 import { AppDatabase, Extracurricular, Student, Coach, Supervisor, Role } from "../types";
 import ConfirmModal from "./ConfirmModal";
+import Papa from "papaparse";
+import * as XLSX from "xlsx";
 
 interface MasterDataViewProps {
   database: AppDatabase;
@@ -422,6 +424,108 @@ export default function MasterDataView({
     resetForms();
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const processData = (data: any[]) => {
+      // expected columns: Nama Siswa, Kelas, Asrama, HP Orang Tua
+      const updatedDb = { ...database };
+      const newStudents: Student[] = [];
+      const newUsers: typeof updatedDb.users = [];
+
+      data.forEach((row, index) => {
+        const nama = row["Nama Siswa"] || row["nama"] || Object.values(row)[0];
+        const kelas = row["Kelas"] || row["kelas"] || Object.values(row)[1] || "-";
+        const asrama = row["Asrama"] || row["asrama"] || Object.values(row)[2] || "-";
+        const noHpOrtu = row["HP Orang Tua"] || row["No HP"] || row["no_hp"] || Object.values(row)[3] || "-";
+
+        if (nama) {
+          const newId = `siswa-${Date.now()}-${index}`;
+          newStudents.push({
+            id: newId,
+            nama: String(nama).trim(),
+            kelas: String(kelas).trim(),
+            asrama: String(asrama).trim(),
+            noHpOrtu: String(noHpOrtu).trim(),
+            ekskulIds: [],
+            riwayat: [{ tanggal: new Date().toISOString().substring(0, 10), kegiatan: "Pendaftaran Akun", keterangan: "Siswa bergabung ke sistem AEMS via Upload." }]
+          });
+
+          newUsers?.push({
+            id: `user-${Date.now()}-${index}`,
+            username: String(nama).toLowerCase().replace(/[^a-z0-9]/g, "").substring(0, 15) + Math.floor(Math.random() * 100),
+            password: "siswa123",
+            nama: String(nama).trim(),
+            role: "Siswa",
+            linkedEntityId: newId
+          });
+        }
+      });
+
+      if (newStudents.length > 0) {
+        updatedDb.students = [...updatedDb.students, ...newStudents];
+        updatedDb.users = [...(updatedDb.users || []), ...(newUsers || [])];
+        
+        if (!updatedDb.auditLogs) updatedDb.auditLogs = [];
+        updatedDb.auditLogs = [
+          {
+            id: `log-${Date.now()}`,
+            tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
+            user: "Koordinator / Admin",
+            peran: currentRole,
+            aktivitas: "Upload Master Data",
+            detail: `Menambah ${newStudents.length} Data Siswa via Upload File`
+          },
+          ...updatedDb.auditLogs
+        ];
+        
+        setDatabase(updatedDb);
+        alert(`Berhasil menambahkan ${newStudents.length} data siswa!`);
+      } else {
+        alert("Tidak ada data valid yang ditemukan dalam file.");
+      }
+      
+      // Reset input
+      e.target.value = '';
+    };
+
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    
+    if (fileExt === 'csv') {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => {
+          processData(results.data);
+        },
+        error: (error: any) => {
+          console.error("CSV Parse Error:", error);
+          alert("Gagal membaca file CSV.");
+        }
+      });
+    } else if (fileExt === 'xlsx' || fileExt === 'xls') {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const bstr = evt.target?.result;
+          const wb = XLSX.read(bstr, { type: 'binary' });
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          const data = XLSX.utils.sheet_to_json(ws);
+          processData(data);
+        } catch (err) {
+          console.error("Excel Parse Error:", err);
+          alert("Gagal membaca file Excel.");
+        }
+      };
+      reader.readAsBinaryString(file);
+    } else {
+      alert("Format file tidak didukung. Harap upload CSV atau XLSX.");
+      e.target.value = '';
+    }
+  };
+
   const getFilteredData = () => {
     const q = searchQuery.toLowerCase();
     switch (activeSubTab) {
@@ -464,17 +568,35 @@ export default function MasterDataView({
           <p className="text-xs text-gray-400">Kelola seluruh entitas dan sumber daya AEMS SMAIT As-Syifa</p>
         </div>
 
-        {!isReadOnly && (activeSubTab === "ekskul" || activeSubTab === "akun") && !(activeSubTab === "ekskul" && ["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) && (
-          <button
-            onClick={() => {
-              resetForms();
-              setShowFormModal(true);
-            }}
-            className="px-4 py-2 bg-maroon-500 hover:bg-maroon-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5 self-start"
-          >
-            <Plus size={15} />
-            {activeSubTab === "ekskul" ? "Tambah Data Ekskul" : "Tambah Akun Portal"}
-          </button>
+        {!isReadOnly && !(activeSubTab === "ekskul" && ["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) && (
+          <div className="flex items-center gap-2 self-start">
+            <button
+              onClick={() => {
+                resetForms();
+                setShowFormModal(true);
+              }}
+              className="px-4 py-2 bg-maroon-500 hover:bg-maroon-500 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5"
+            >
+              <Plus size={15} />
+              {activeSubTab === "ekskul" ? "Tambah Data Ekskul" : 
+               activeSubTab === "siswa" ? "Tambah Data Siswa" : 
+               activeSubTab === "pelatih" ? "Tambah Data Pelatih" : 
+               activeSubTab === "pembina" ? "Tambah Data Pembina" : 
+               "Tambah Akun Portal"}
+            </button>
+            {activeSubTab === "siswa" && (
+              <label className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-bold text-xs rounded-xl shadow transition-all flex items-center gap-1.5 cursor-pointer">
+                <Download size={15} className="rotate-180" />
+                Upload Data
+                <input
+                  type="file"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                />
+              </label>
+            )}
+          </div>
         )}
       </div>
 
