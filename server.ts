@@ -169,6 +169,137 @@ Aturan Respons Anda:
   }
 });
 
+// OTP In-Memory Cache: { phone: { otp: string, userId: string, expiresAt: number } }
+const otpCache = new Map<string, { otp: string, userId: string, expiresAt: number }>();
+
+app.post("/api/send-otp", async (req, res) => {
+  try {
+    const { phone } = req.body;
+    if (!phone) return res.status(400).json({ error: "Nomor HP diperlukan" });
+
+    await ensureDb();
+    const rawData = await fs.readFile(DB_FILE, "utf-8");
+    const db = JSON.parse(rawData);
+
+    // Clean phone number input
+    const cleanPhone = phone.replace(/[^0-9+]/g, "");
+
+    // Search user by phone number
+    let matchedUserId: string | null = null;
+    let matchedUserName: string | null = null;
+
+    // Search in students
+    const student = db.students.find((s: any) => s.noHpOrtu.replace(/[^0-9+]/g, "") === cleanPhone);
+    if (student) { matchedUserId = student.id; matchedUserName = student.nama; }
+    
+    // Search in coaches
+    if (!matchedUserId) {
+      const coach = db.coaches.find((c: any) => c.noHp.replace(/[^0-9+]/g, "") === cleanPhone);
+      if (coach) { matchedUserId = coach.id; matchedUserName = coach.nama; }
+    }
+
+    // Search in supervisors
+    if (!matchedUserId) {
+      const supervisor = db.supervisors.find((p: any) => p.kontak.replace(/[^0-9+]/g, "") === cleanPhone);
+      if (supervisor) { matchedUserId = supervisor.id; matchedUserName = supervisor.nama; }
+    }
+
+    if (!matchedUserId) {
+      return res.status(404).json({ error: "Nomor HP tidak ditemukan di database" });
+    }
+
+    // Find the actual user account that has this linkedEntityId
+    const userAcc = (db.users || []).find((u: any) => u.linkedEntityId === matchedUserId);
+    if (!userAcc) {
+      return res.status(404).json({ error: "Akun login untuk pengguna ini belum dibuat" });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+    // Store in cache for 5 minutes
+    otpCache.set(cleanPhone, { 
+      otp, 
+      userId: userAcc.id, 
+      expiresAt: Date.now() + 5 * 60 * 1000 
+    });
+
+    // TODO: Connect to real API here (e.g. Fonnte or Twilio)
+    // Example (Fonnte):
+    // await fetch("https://api.fonnte.com/send", { method: "POST", headers: { Authorization: "YOUR_TOKEN" }, body: new URLSearchParams({ target: cleanPhone, message: `Kode OTP ABSW Juara Anda adalah: ${otp}` }) });
+    
+    console.log(`\n=========================================`);
+    console.log(`[MOCK SMS/WA] Mengirim OTP ke ${cleanPhone}`);
+    console.log(`Halo ${matchedUserName}, kode OTP Anda adalah: ${otp}`);
+    console.log(`=========================================\n`);
+
+    res.json({ success: true, message: "OTP berhasil dikirim" });
+  } catch (error: any) {
+    res.status(500).json({ error: "Gagal mengirim OTP", details: error.message });
+  }
+});
+
+app.post("/api/verify-otp", async (req, res) => {
+  try {
+    const { phone, otp } = req.body;
+    const cleanPhone = phone.replace(/[^0-9+]/g, "");
+    
+    const record = otpCache.get(cleanPhone);
+    if (!record) {
+      return res.status(400).json({ error: "OTP tidak ditemukan atau sudah kadaluarsa" });
+    }
+    
+    if (Date.now() > record.expiresAt) {
+      otpCache.delete(cleanPhone);
+      return res.status(400).json({ error: "Kode OTP sudah kadaluarsa" });
+    }
+
+    if (record.otp !== otp) {
+      return res.status(400).json({ error: "Kode OTP salah" });
+    }
+
+    // Verify success, keep record for resetting password
+    res.json({ success: true, message: "OTP valid" });
+  } catch (error: any) {
+    res.status(500).json({ error: "Gagal memverifikasi OTP", details: error.message });
+  }
+});
+
+app.post("/api/reset-password", async (req, res) => {
+  try {
+    const { phone, otp, newPassword } = req.body;
+    const cleanPhone = phone.replace(/[^0-9+]/g, "");
+
+    const record = otpCache.get(cleanPhone);
+    if (!record || record.otp !== otp || Date.now() > record.expiresAt) {
+      return res.status(400).json({ error: "Sesi OTP tidak valid, mohon ulangi" });
+    }
+
+    await ensureDb();
+    const rawData = await fs.readFile(DB_FILE, "utf-8");
+    const db = JSON.parse(rawData);
+
+    let updated = false;
+    db.users = (db.users || []).map((u: any) => {
+      if (u.id === record.userId) {
+        updated = true;
+        return { ...u, password: newPassword };
+      }
+      return u;
+    });
+
+    if (updated) {
+      await fs.writeFile(DB_FILE, JSON.stringify(db, null, 2), "utf-8");
+      otpCache.delete(cleanPhone); // Clear cache
+      res.json({ success: true, message: "Kata sandi berhasil direset" });
+    } else {
+      res.status(404).json({ error: "Pengguna tidak ditemukan" });
+    }
+  } catch (error: any) {
+    res.status(500).json({ error: "Gagal mereset kata sandi", details: error.message });
+  }
+});
+
 // Setup development and production serving
 async function start() {
   await ensureDb();

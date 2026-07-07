@@ -4,6 +4,7 @@ import { AppDatabase, Extracurricular, Student, Coach, Supervisor, Role } from "
 import ConfirmModal from "./ConfirmModal";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import { motion, AnimatePresence } from "motion/react";
 
 interface MasterDataViewProps {
   database: AppDatabase;
@@ -22,6 +23,7 @@ export default function MasterDataView({
 }: MasterDataViewProps) {
   const [activeSubTab, setActiveSubTab] = useState<"ekskul" | "siswa" | "pelatih" | "pembina" | "akun">(initialSubTab as any);
   const [searchQuery, setSearchQuery] = useState("");
+  const [toastMessage, setToastMessage] = useState<{title: string; message: string; type: "success" | "error"} | null>(null);
   
   // Modal/Form states
   const [showFormModal, setShowFormModal] = useState(false);
@@ -481,9 +483,11 @@ export default function MasterDataView({
         ];
         
         setDatabase(updatedDb);
-        alert(`Berhasil menambahkan ${newStudents.length} data siswa!`);
+        setToastMessage({ title: "Berhasil", message: `Menambahkan ${newStudents.length} data siswa secara massal!`, type: "success" });
+        setTimeout(() => setToastMessage(null), 4000);
       } else {
-        alert("Tidak ada data valid yang ditemukan dalam file.");
+        setToastMessage({ title: "Gagal", message: "Tidak ada data valid yang ditemukan dalam file.", type: "error" });
+        setTimeout(() => setToastMessage(null), 4000);
       }
       
       // Reset input
@@ -501,7 +505,8 @@ export default function MasterDataView({
         },
         error: (error: any) => {
           console.error("CSV Parse Error:", error);
-          alert("Gagal membaca file CSV.");
+          setToastMessage({ title: "Gagal", message: "Gagal membaca file CSV.", type: "error" });
+          setTimeout(() => setToastMessage(null), 4000);
         }
       });
     } else if (fileExt === 'xlsx' || fileExt === 'xls') {
@@ -516,12 +521,14 @@ export default function MasterDataView({
           processData(data);
         } catch (err) {
           console.error("Excel Parse Error:", err);
-          alert("Gagal membaca file Excel.");
+          setToastMessage({ title: "Gagal", message: "Gagal membaca file Excel.", type: "error" });
+          setTimeout(() => setToastMessage(null), 4000);
         }
       };
       reader.readAsBinaryString(file);
     } else {
-      alert("Format file tidak didukung. Harap upload CSV atau XLSX.");
+      setToastMessage({ title: "Gagal", message: "Format file tidak didukung. Harap upload CSV atau XLSX.", type: "error" });
+      setTimeout(() => setToastMessage(null), 4000);
       e.target.value = '';
     }
   };
@@ -559,6 +566,32 @@ export default function MasterDataView({
 
   return (
     <div className="space-y-6">
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, x: 20 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: -20, x: 20 }}
+            className={`fixed top-6 right-6 z-50 p-4 rounded-xl shadow-lg border flex items-start gap-3 w-80 ${
+              toastMessage.type === "success" 
+                ? "bg-green-50 border-green-200 text-green-700"
+                : "bg-red-50 border-red-200 text-red-700"
+            }`}
+          >
+            <div className={`mt-0.5 ${toastMessage.type === "success" ? "text-green-500" : "text-red-500"}`}>
+              {toastMessage.type === "success" ? <Check size={18} /> : <Info size={18} />}
+            </div>
+            <div className="flex-1">
+              <h4 className="font-bold text-sm">{toastMessage.title}</h4>
+              <p className="text-xs mt-1 opacity-90">{toastMessage.message}</p>
+            </div>
+            <button onClick={() => setToastMessage(null)} className="opacity-50 hover:opacity-100 transition-opacity">
+              <X size={16} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Title & Tabs Panel */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -786,70 +819,104 @@ export default function MasterDataView({
         </div>
       )}
 
-      {activeSubTab === "siswa" && (
-        <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-surface-sunken border-b border-border text-[10px] font-mono tracking-wider text-gray-400 font-semibold uppercase">
-                  <th className="p-4">Nama Santri</th>
-                  <th className="p-4">Kelas</th>
-                  <th className="p-4">Gedung Asrama</th>
-                  <th className="p-4">HP Wali / Orang Tua</th>
-                  <th className="p-4">Ekstrakurikuler</th>
-                  {!isReadOnly && <th className="p-4 text-right">Aksi</th>}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50 text-xs text-gray-600">
-                {(filteredItems as Student[]).map((s) => (
-                  <tr key={s.id} className="hover:bg-surface-sunken transition-colors">
-                    <td className="p-4 font-bold text-gray-800">{s.nama}</td>
-                    <td className="p-4">{s.kelas}</td>
-                    <td className="p-4 flex items-center gap-1.5">
-                      <Home size={12} className="text-gray-400 shrink-0" />
-                      <span className="truncate max-w-44">{s.asrama}</span>
-                    </td>
-                    <td className="p-4 font-mono">{s.noHpOrtu}</td>
-                    <td className="p-4">
-                      <div className="flex flex-wrap gap-1">
-                        {s.ekskulIds.map((eid) => {
-                          const name = database.extracurriculars.find((e) => e.id === eid)?.nama;
-                          return (
-                            <span
-                              key={eid}
-                              className="px-2 py-0.5 rounded text-[10px] font-medium bg-maroon-50 text-maroon-700 border border-maroon-100 shrink-0"
-                            >
-                              {name || "Ekskul"}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </td>
-                    {!isReadOnly && (
-                      <td className="p-4 text-right">
-                        <div className="inline-flex gap-2">
-                          <button
-                            onClick={() => handleEdit("siswa", s.id)}
-                            className="p-1.5 rounded-lg border border-border hover:text-maroon-500 transition-colors bg-white"
-                          >
-                            <Edit2 size={12} />
-                          </button>
-                          <button
-                            onClick={() => handleDelete("siswa", s.id)}
-                            className="p-1.5 rounded-lg border border-border hover:text-navy-500 transition-colors bg-white"
-                          >
-                            <Trash2 size={12} />
-                          </button>
-                        </div>
-                      </td>
-                    )}
+      {activeSubTab === "siswa" && (() => {
+        const students = filteredItems as Student[];
+        
+        // Group by kelas
+        const groupedStudents = students.reduce((acc, student) => {
+          const kelas = student.kelas || "Tanpa Kelas";
+          if (!acc[kelas]) acc[kelas] = [];
+          acc[kelas].push(student);
+          return acc;
+        }, {} as Record<string, Student[]>);
+
+        // Sort classes alphabetically
+        const sortedClasses = Object.keys(groupedStudents).sort((a, b) => a.localeCompare(b));
+
+        return (
+          <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-surface-sunken border-b border-border text-[10px] font-mono tracking-wider text-gray-400 font-semibold uppercase">
+                    <th className="p-4">Nama Santri</th>
+                    <th className="p-4">Kelas</th>
+                    <th className="p-4">Gedung Asrama</th>
+                    <th className="p-4">HP Wali / Orang Tua</th>
+                    <th className="p-4">Ekstrakurikuler</th>
+                    {!isReadOnly && <th className="p-4 text-right">Aksi</th>}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-50 text-xs text-gray-600">
+                  {sortedClasses.length === 0 && (
+                    <tr>
+                      <td colSpan={6} className="p-8 text-center text-gray-400">Tidak ada data siswa yang ditemukan.</td>
+                    </tr>
+                  )}
+                  {sortedClasses.map((kelas) => {
+                    // Sort students by name alphabetically within the class
+                    const sortedStudents = groupedStudents[kelas].sort((a, b) => a.nama.localeCompare(b.nama));
+                    
+                    return (
+                      <React.Fragment key={kelas}>
+                        <tr className="bg-gray-50/80 border-y border-gray-100">
+                          <td colSpan={6} className="p-3 pl-4 font-bold text-gray-700 text-[11px] uppercase tracking-wider">
+                            Kelas {kelas} <span className="ml-2 px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-[9px]">{sortedStudents.length} Siswa</span>
+                          </td>
+                        </tr>
+                        {sortedStudents.map((s) => (
+                          <tr key={s.id} className="hover:bg-surface-sunken transition-colors">
+                            <td className="p-4 font-bold text-gray-800">{s.nama}</td>
+                            <td className="p-4">{s.kelas}</td>
+                            <td className="p-4 flex items-center gap-1.5">
+                              <Home size={12} className="text-gray-400 shrink-0" />
+                              <span className="truncate max-w-44">{s.asrama}</span>
+                            </td>
+                            <td className="p-4 font-mono">{s.noHpOrtu}</td>
+                            <td className="p-4">
+                              <div className="flex flex-wrap gap-1">
+                                {s.ekskulIds.map((eid) => {
+                                  const name = database.extracurriculars.find((e) => e.id === eid)?.nama;
+                                  return (
+                                    <span
+                                      key={eid}
+                                      className="px-2 py-0.5 rounded text-[10px] font-medium bg-maroon-50 text-maroon-700 border border-maroon-100 shrink-0"
+                                    >
+                                      {name || "Ekskul"}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </td>
+                            {!isReadOnly && (
+                              <td className="p-4 text-right">
+                                <div className="inline-flex gap-2">
+                                  <button
+                                    onClick={() => handleEdit("siswa", s.id)}
+                                    className="p-1.5 rounded-lg border border-border hover:text-maroon-500 transition-colors bg-white"
+                                  >
+                                    <Edit2 size={12} />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDelete("siswa", s.id)}
+                                    className="p-1.5 rounded-lg border border-border hover:text-navy-500 transition-colors bg-white"
+                                  >
+                                    <Trash2 size={12} />
+                                  </button>
+                                </div>
+                              </td>
+                            )}
+                          </tr>
+                        ))}
+                      </React.Fragment>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {activeSubTab === "pelatih" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -15,13 +15,9 @@ export default function LoginView({
   onLogin,
   onRegister
 }: LoginViewProps) {
-  const [activeTab, setActiveTab] = useState<"login" | "register">("login");
+  const [activeTab, setActiveTab] = useState<"login" | "register" | "forgot">("login");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-
-  // Login States
-  const [loginUsername, setLoginUsername] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
 
   // Registration States
   const [regRole, setRegRole] = useState<"Siswa" | "Pelatih" | "Pembina Ekstrakurikuler">("Siswa");
@@ -32,6 +28,13 @@ export default function LoginView({
   const [regPassword, setRegPassword] = useState("");
   const [regSkill, setRegSkill] = useState("");
   const [regPosition, setRegPosition] = useState("");
+
+  // Forgot Password States
+  const [forgotStep, setForgotStep] = useState<1 | 2 | 3>(1);
+  const [forgotPhone, setForgotPhone] = useState("");
+  const [forgotOtp, setForgotOtp] = useState("");
+  const [forgotNewPassword, setForgotNewPassword] = useState("");
+  const [isLoadingOtp, setIsLoadingOtp] = useState(false);
 
   const classOptions = [
     "X-A IPA", "X-B IPA", "X-C IPS", "X-D IPS",
@@ -359,7 +362,7 @@ export default function LoginView({
                     <input type="checkbox" defaultChecked className="rounded text-maroon-500 accent-maroon-500" />
                     <span>Ingat Akun Saya</span>
                   </label>
-                  <button type="button" className="text-gold-600 hover:underline font-semibold">Lupa Sandi?</button>
+                  <button type="button" onClick={() => { setActiveTab("forgot"); setErrorMsg(null); setForgotStep(1); }} className="text-gold-600 hover:underline font-semibold">Lupa Sandi?</button>
                 </div>
                 <button
                   type="submit"
@@ -478,6 +481,138 @@ export default function LoginView({
                   <ArrowRight size={14} />
                 </button>
               </form>
+            </motion.div>
+          )}
+
+          {/* FORGOT PASSWORD FORM */}
+          {activeTab === "forgot" && (
+            <motion.div initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}>
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h3 className="font-display font-extrabold text-xl text-maroon-600">Lupa Kata Sandi</h3>
+                  <p className="text-xs text-slate-400 mt-1">
+                    {forgotStep === 1 ? "Masukkan nomor HP yang terdaftar untuk menerima OTP." :
+                     forgotStep === 2 ? "Masukkan kode OTP yang dikirimkan ke nomor Anda." :
+                     "Buat kata sandi baru untuk akun Anda."}
+                  </p>
+                </div>
+                <button type="button" onClick={() => setActiveTab("login")} className="text-slate-400 hover:text-slate-600">
+                  <X size={20} />
+                </button>
+              </div>
+
+              {forgotStep === 1 && (
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!forgotPhone.trim()) { setErrorMsg("Nomor HP wajib diisi."); return; }
+                  setIsLoadingOtp(true);
+                  try {
+                    const res = await fetch("/api/send-otp", {
+                      method: "POST", headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ phone: forgotPhone })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                      setSuccessMsg("OTP berhasil dikirim ke nomor Anda.");
+                      setErrorMsg(null);
+                      setForgotStep(2);
+                    } else {
+                      setErrorMsg(data.error || "Gagal mengirim OTP.");
+                    }
+                  } catch (err: any) {
+                    setErrorMsg("Terjadi kesalahan sistem.");
+                  } finally {
+                    setIsLoadingOtp(false);
+                  }
+                }} className="space-y-4">
+                  <div>
+                    <label className={labelClass}>Nomor HP Terdaftar</label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Phone size={14} /></span>
+                      <input type="tel" required placeholder="08123456789" value={forgotPhone} onChange={(e) => setForgotPhone(e.target.value)} className={inputClass} />
+                    </div>
+                  </div>
+                  <button type="submit" disabled={isLoadingOtp} className="w-full py-3 bg-maroon-500 hover:bg-maroon-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all disabled:opacity-50">
+                    {isLoadingOtp ? "Mengirim..." : "Kirim Kode OTP"}
+                  </button>
+                </form>
+              )}
+
+              {forgotStep === 2 && (
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (!forgotOtp.trim()) { setErrorMsg("Kode OTP wajib diisi."); return; }
+                  setIsLoadingOtp(true);
+                  try {
+                    const res = await fetch("/api/verify-otp", {
+                      method: "POST", headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ phone: forgotPhone, otp: forgotOtp })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                      setSuccessMsg("OTP valid! Silakan buat kata sandi baru.");
+                      setErrorMsg(null);
+                      setForgotStep(3);
+                    } else {
+                      setErrorMsg(data.error || "Kode OTP salah.");
+                    }
+                  } catch (err: any) {
+                    setErrorMsg("Terjadi kesalahan sistem.");
+                  } finally {
+                    setIsLoadingOtp(false);
+                  }
+                }} className="space-y-4">
+                  <div>
+                    <label className={labelClass}>Kode OTP (6 Digit)</label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Lock size={14} /></span>
+                      <input type="text" required placeholder="123456" value={forgotOtp} onChange={(e) => setForgotOtp(e.target.value)} className={inputClass + " tracking-widest font-bold"} maxLength={6} />
+                    </div>
+                  </div>
+                  <button type="submit" disabled={isLoadingOtp} className="w-full py-3 bg-maroon-500 hover:bg-maroon-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all disabled:opacity-50">
+                    {isLoadingOtp ? "Memverifikasi..." : "Verifikasi OTP"}
+                  </button>
+                </form>
+              )}
+
+              {forgotStep === 3 && (
+                <form onSubmit={async (e) => {
+                  e.preventDefault();
+                  if (forgotNewPassword.length < 5) { setErrorMsg("Kata sandi minimal 5 karakter."); return; }
+                  setIsLoadingOtp(true);
+                  try {
+                    const res = await fetch("/api/reset-password", {
+                      method: "POST", headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ phone: forgotPhone, otp: forgotOtp, newPassword: forgotNewPassword })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                      setSuccessMsg("Kata sandi berhasil direset! Silakan login.");
+                      setErrorMsg(null);
+                      setTimeout(() => {
+                        setActiveTab("login");
+                      }, 2000);
+                    } else {
+                      setErrorMsg(data.error || "Gagal mereset sandi.");
+                    }
+                  } catch (err: any) {
+                    setErrorMsg("Terjadi kesalahan sistem.");
+                  } finally {
+                    setIsLoadingOtp(false);
+                  }
+                }} className="space-y-4">
+                  <div>
+                    <label className={labelClass}>Kata Sandi Baru</label>
+                    <div className="relative">
+                      <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Lock size={14} /></span>
+                      <input type="password" required placeholder="Minimal 5 karakter" value={forgotNewPassword} onChange={(e) => setForgotNewPassword(e.target.value)} className={inputClass} />
+                    </div>
+                  </div>
+                  <button type="submit" disabled={isLoadingOtp} className="w-full py-3 bg-maroon-500 hover:bg-maroon-600 text-white font-semibold text-sm rounded-xl shadow-sm transition-all disabled:opacity-50">
+                    {isLoadingOtp ? "Menyimpan..." : "Simpan Kata Sandi"}
+                  </button>
+                </form>
+              )}
             </motion.div>
           )}
         </div>
