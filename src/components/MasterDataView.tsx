@@ -833,31 +833,28 @@ export default function MasterDataView({
 
         return (
           <div className="space-y-4">
-            {/* Filter Buttons */}
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => setStudentClassFilter("Semua")}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                  studentClassFilter === "Semua"
-                    ? "bg-maroon-500 text-white shadow-md"
-                    : "bg-white border border-gray-200 text-gray-600 hover:border-maroon-300 hover:text-maroon-600"
-                }`}
+            {/* Filter Dropdown */}
+            <div className="flex items-center gap-3 bg-gray-50/50 p-3 rounded-xl border border-gray-100 mb-2">
+              <label htmlFor="class-filter" className="text-xs font-bold text-gray-700 whitespace-nowrap flex items-center gap-2">
+                <Search size={14} className="text-gray-400" />
+                Filter Kelas:
+              </label>
+              <select
+                id="class-filter"
+                value={studentClassFilter}
+                onChange={(e) => setStudentClassFilter(e.target.value)}
+                className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-maroon-500 focus:border-transparent transition-all cursor-pointer min-w-[200px]"
               >
-                Semua Kelas
-              </button>
-              {allClasses.map(kelas => (
-                <button
-                  key={kelas}
-                  onClick={() => setStudentClassFilter(kelas)}
-                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
-                    studentClassFilter === kelas
-                      ? "bg-maroon-500 text-white shadow-md"
-                      : "bg-white border border-gray-200 text-gray-600 hover:border-maroon-300 hover:text-maroon-600"
-                  }`}
-                >
-                  {kelas}
-                </button>
-              ))}
+                <option value="Semua">Tampilkan Semua Kelas</option>
+                {allClasses.map(kelas => (
+                  <option key={kelas} value={kelas}>Kelas {kelas}</option>
+                ))}
+              </select>
+              {studentClassFilter !== "Semua" && (
+                <span className="text-[10px] bg-maroon-100 text-maroon-700 font-bold px-2.5 py-1 rounded-full ml-auto">
+                  {displayStudents.length} Santri
+                </span>
+              )}
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
