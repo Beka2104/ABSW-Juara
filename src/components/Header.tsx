@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Search, Bell, Shield, User, Clock, Menu, LogOut, ChevronDown, X, Upload } from "lucide-react";
 import { AppDatabase, Role, SystemNotification } from "../types";

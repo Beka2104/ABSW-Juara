@@ -19,6 +19,10 @@ export default function LoginView({
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
+  // Login States
+  const [loginUsername, setLoginUsername] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
   // Registration States
   const [regRole, setRegRole] = useState<"Siswa" | "Pelatih" | "Pembina Ekstrakurikuler">("Siswa");
   const [regName, setRegName] = useState("");

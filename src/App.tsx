@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Sparkles, Send, X, Shield, Clock, Loader, RotateCcw, Landmark, Monitor } from "lucide-react";
 
-import { AppDatabase, Role, Student } from "./types";
+import { AppDatabase, Role, Student, Coach, Supervisor } from "./types";
 import { initialDatabase } from "./data";
 
 // Component imports
