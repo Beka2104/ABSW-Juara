@@ -7,13 +7,13 @@ import { AppDatabase, Student, Role } from "../types";
 interface LoginViewProps {
   database: AppDatabase;
   onLogin: (role: Role, studentId?: string, studentName?: string) => void;
-  onRegisterStudent: (newStudent: Student, password?: string) => void;
+  onRegister: (entityData: any, role: Role, password?: string) => void;
 }
 
 export default function LoginView({
   database,
   onLogin,
-  onRegisterStudent
+  onRegister
 }: LoginViewProps) {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -24,11 +24,14 @@ export default function LoginView({
   const [loginPassword, setLoginPassword] = useState("");
 
   // Registration States
+  const [regRole, setRegRole] = useState<"Siswa" | "Pelatih" | "Pembina Ekstrakurikuler">("Siswa");
   const [regName, setRegName] = useState("");
   const [regClass, setRegClass] = useState("X-A IPA");
   const [regDorm, setRegDorm] = useState("");
   const [regPhone, setRegPhone] = useState("");
   const [regPassword, setRegPassword] = useState("");
+  const [regSkill, setRegSkill] = useState("");
+  const [regPosition, setRegPosition] = useState("");
 
   const classOptions = [
     "X-A IPA", "X-B IPA", "X-C IPS", "X-D IPS",
@@ -137,34 +140,59 @@ export default function LoginView({
 
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!regName.trim()) { setErrorMsg("Nama lengkap siswa wajib diisi."); return; }
-    if (!regDorm.trim()) { setErrorMsg("Kamar & Gedung Asrama wajib diisi."); return; }
-    if (!regPhone.trim()) { setErrorMsg("Nomor HP Orang Tua wajib diisi."); return; }
+    if (!regName.trim()) { setErrorMsg("Nama lengkap wajib diisi."); return; }
+    if (regRole === "Siswa" && !regDorm.trim()) { setErrorMsg("Kamar & Gedung Asrama wajib diisi."); return; }
+    if (!regPhone.trim()) { setErrorMsg("Nomor HP wajib diisi."); return; }
+    if (regRole === "Pelatih" && !regSkill.trim()) { setErrorMsg("Keahlian & Lisensi wajib diisi."); return; }
+    if (regRole === "Pembina Ekstrakurikuler" && !regPosition.trim()) { setErrorMsg("Jabatan wajib diisi."); return; }
     if (!regPassword) { setErrorMsg("Kata sandi baru wajib dibuat."); return; }
     if (regPassword.length < 5) { setErrorMsg("Kata sandi minimal 5 karakter."); return; }
 
-    const newStudentId = `std-${Date.now()}`;
-    const newStudent: Student = {
-      id: newStudentId,
-      nama: regName.trim(),
-      kelas: regClass,
-      asrama: regDorm.trim(),
-      noHpOrtu: regPhone.trim(),
-      ekskulIds: [],
-      riwayat: [
-        {
-          tanggal: new Date().toISOString().substring(0, 10),
-          kegiatan: "Registrasi Portal ABSW Juara",
-          keterangan: "Bergabung secara resmi di portal."
-        }
-      ]
-    };
+    let newEntity: any = {};
+    const newId = `${regRole === "Siswa" ? "std" : regRole === "Pelatih" ? "coach" : "spv"}-${Date.now()}`;
 
-    setSuccessMsg(`Pendaftaran berhasil! Selamat bergabung ${newStudent.nama}.`);
+    if (regRole === "Siswa") {
+      newEntity = {
+        id: newId,
+        nama: regName.trim(),
+        kelas: regClass,
+        asrama: regDorm.trim(),
+        noHpOrtu: regPhone.trim(),
+        ekskulIds: [],
+        riwayat: [
+          {
+            tanggal: new Date().toISOString().substring(0, 10),
+            kegiatan: "Registrasi Portal ABSW Juara",
+            keterangan: "Bergabung secara resmi di portal."
+          }
+        ]
+      };
+    } else if (regRole === "Pelatih") {
+      newEntity = {
+        id: newId,
+        nama: regName.trim(),
+        keahlian: regSkill.trim(),
+        noHp: regPhone.trim(),
+        email: "",
+        honor: 1000000,
+        status: "Aktif",
+        riwayatMengajar: []
+      };
+    } else if (regRole === "Pembina Ekstrakurikuler") {
+      newEntity = {
+        id: newId,
+        nama: regName.trim(),
+        jabatan: regPosition.trim(),
+        kontak: regPhone.trim(),
+        ekskulBinaan: []
+      };
+    }
+
+    setSuccessMsg(`Pendaftaran berhasil! Selamat bergabung ${newEntity.nama}.`);
     setErrorMsg(null);
     setTimeout(() => {
-      onRegisterStudent(newStudent, regPassword);
-      onLogin("Siswa", newStudent.id, newStudent.nama);
+      onRegister(newEntity, regRole, regPassword);
+      onLogin(regRole, newEntity.id, newEntity.nama);
     }, 2000);
   };
 
@@ -254,7 +282,7 @@ export default function LoginView({
               }`}
             >
               <UserPlus size={14} />
-              Daftar Siswa Baru
+              Daftar Akun Baru
             </button>
           </div>
 
@@ -358,39 +386,77 @@ export default function LoginView({
               className="max-h-[75vh] overflow-y-auto pr-1"
             >
               <div className="mb-6">
-                <h3 className="font-display font-extrabold text-xl text-maroon-600">Pendaftaran Siswa Baru</h3>
-                <p className="text-xs text-slate-400 mt-1">Masukkan identitas lengkap santri untuk mendaftarkan akun baru.</p>
+                <h3 className="font-display font-extrabold text-xl text-maroon-600">Pendaftaran Akun Baru</h3>
+                <p className="text-xs text-slate-400 mt-1">Masukkan identitas lengkap untuk mendaftarkan akun baru.</p>
               </div>
 
               <form onSubmit={handleRegisterSubmit} className="space-y-4">
+                <div className="flex gap-4 mb-4">
+                  <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                    <input type="radio" checked={regRole === "Siswa"} onChange={() => setRegRole("Siswa")} className="accent-maroon-500" />
+                    Siswa
+                  </label>
+                  <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                    <input type="radio" checked={regRole === "Pelatih"} onChange={() => setRegRole("Pelatih")} className="accent-maroon-500" />
+                    Pelatih
+                  </label>
+                  <label className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                    <input type="radio" checked={regRole === "Pembina Ekstrakurikuler"} onChange={() => setRegRole("Pembina Ekstrakurikuler")} className="accent-maroon-500" />
+                    Pembina
+                  </label>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
+                  <div className={regRole !== "Siswa" ? "col-span-2 sm:col-span-1" : ""}>
                     <label className={labelClass}>Nama Lengkap</label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><User size={14} /></span>
-                      <input type="text" required placeholder="Ahmad Rabbani" value={regName} onChange={(e) => setRegName(e.target.value)} className={inputClass} />
+                      <input type="text" required placeholder="Nama Lengkap Anda" value={regName} onChange={(e) => setRegName(e.target.value)} className={inputClass} />
                     </div>
                   </div>
-                  <div>
-                    <label className={labelClass}>Kelas</label>
-                    <div className="relative">
-                      <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Compass size={14} /></span>
-                      <select value={regClass} onChange={(e) => setRegClass(e.target.value)} className={inputClass + " cursor-pointer"}>
-                        {classOptions.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
-                      </select>
+                  {regRole === "Siswa" && (
+                    <div>
+                      <label className={labelClass}>Kelas</label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Compass size={14} /></span>
+                        <select value={regClass} onChange={(e) => setRegClass(e.target.value)} className={inputClass + " cursor-pointer"}>
+                          {classOptions.map((opt) => (<option key={opt} value={opt}>{opt}</option>))}
+                        </select>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {regRole === "Pelatih" && (
+                    <div>
+                      <label className={labelClass}>Keahlian & Lisensi</label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><BookOpen size={14} /></span>
+                        <input type="text" required placeholder="Contoh: Pelatih Panahan" value={regSkill} onChange={(e) => setRegSkill(e.target.value)} className={inputClass} />
+                      </div>
+                    </div>
+                  )}
+                  {regRole === "Pembina Ekstrakurikuler" && (
+                    <div>
+                      <label className={labelClass}>Jabatan Guru / Staff</label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Landmark size={14} /></span>
+                        <input type="text" required placeholder="Contoh: Wakasek Kesiswaan" value={regPosition} onChange={(e) => setRegPosition(e.target.value)} className={inputClass} />
+                      </div>
+                    </div>
+                  )}
                 </div>
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className={labelClass}>Gedung & Kamar Asrama</label>
-                    <div className="relative">
-                      <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Home size={14} /></span>
-                      <input type="text" required placeholder="Gdg Shalahuddin Kamar 5" value={regDorm} onChange={(e) => setRegDorm(e.target.value)} className={inputClass} />
+                  {regRole === "Siswa" && (
+                    <div>
+                      <label className={labelClass}>Gedung & Kamar Asrama</label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Home size={14} /></span>
+                        <input type="text" required placeholder="Gdg Shalahuddin Kamar 5" value={regDorm} onChange={(e) => setRegDorm(e.target.value)} className={inputClass} />
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <label className={labelClass}>No. HP Orang Tua</label>
+                  )}
+                  <div className={regRole !== "Siswa" ? "col-span-2 sm:col-span-2" : ""}>
+                    <label className={labelClass}>{regRole === "Siswa" ? "No. HP Orang Tua" : "Nomor HP Kontak"}</label>
                     <div className="relative">
                       <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Phone size={14} /></span>
                       <input type="tel" required placeholder="+62812345678" value={regPhone} onChange={(e) => setRegPhone(e.target.value)} className={inputClass} />

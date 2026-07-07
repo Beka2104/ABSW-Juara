@@ -208,21 +208,29 @@ export default function App() {
     setIsMobileSidebarOpen(false);
   };
 
-  const handleRegisterStudent = (newStudent: Student, password?: string) => {
+  const handleRegister = (entityData: any, role: Role, password?: string) => {
     if (!database) return;
     const newUserAccount = {
       id: `user-${Date.now()}`,
-      username: newStudent.nama.toLowerCase().replace(/\s+/g, ""),
-      password: password || "siswa123",
-      nama: newStudent.nama,
-      role: "Siswa" as const,
-      linkedEntityId: newStudent.id
+      username: entityData.nama.toLowerCase().replace(/\s+/g, ""),
+      password: password || (role === "Siswa" ? "siswa123" : role === "Pelatih" ? "pelatih123" : "pembina123"),
+      nama: entityData.nama,
+      role: role,
+      linkedEntityId: entityData.id
     };
-    const updatedDb: AppDatabase = {
-      ...database,
-      students: [...database.students, newStudent],
-      users: [...(database.users || []), newUserAccount]
-    };
+    
+    const updatedDb: AppDatabase = { ...database };
+    
+    if (role === "Siswa") {
+      updatedDb.students = [...updatedDb.students, entityData as Student];
+    } else if (role === "Pelatih") {
+      updatedDb.coaches = [...updatedDb.coaches, entityData as Coach];
+    } else if (role === "Pembina Ekstrakurikuler") {
+      updatedDb.supervisors = [...updatedDb.supervisors, entityData as Supervisor];
+    }
+
+    updatedDb.users = [...(updatedDb.users || []), newUserAccount];
+    
     setDatabase(updatedDb);
     saveDatabase(updatedDb);
   };
@@ -287,7 +295,7 @@ export default function App() {
       <LoginView
         database={database || initialDatabase}
         onLogin={handleLogin}
-        onRegisterStudent={handleRegisterStudent}
+        onRegister={handleRegister}
       />
     );
   }
