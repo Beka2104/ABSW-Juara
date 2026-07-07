@@ -23,6 +23,7 @@ export default function MasterDataView({
 }: MasterDataViewProps) {
   const [activeSubTab, setActiveSubTab] = useState<"ekskul" | "siswa" | "pelatih" | "pembina" | "akun">(initialSubTab as any);
   const [searchQuery, setSearchQuery] = useState("");
+  const [studentClassFilter, setStudentClassFilter] = useState<string>("Semua");
   const [toastMessage, setToastMessage] = useState<{title: string; message: string; type: "success" | "error"} | null>(null);
   
   // Modal/Form states
@@ -822,97 +823,109 @@ export default function MasterDataView({
       {activeSubTab === "siswa" && (() => {
         const students = filteredItems as Student[];
         
-        // Group by kelas
-        const groupedStudents = students.reduce((acc, student) => {
-          const kelas = student.kelas || "Tanpa Kelas";
-          if (!acc[kelas]) acc[kelas] = [];
-          acc[kelas].push(student);
-          return acc;
-        }, {} as Record<string, Student[]>);
-
-        // Sort classes alphabetically
-        const sortedClasses = Object.keys(groupedStudents).sort((a, b) => a.localeCompare(b));
+        // Find all unique classes
+        const allClasses = Array.from(new Set(students.map(s => s.kelas || "Tanpa Kelas"))).sort((a, b) => a.localeCompare(b));
+        
+        // Filter students by selected class
+        const displayStudents = studentClassFilter === "Semua" 
+          ? students.sort((a, b) => a.nama.localeCompare(b.nama))
+          : students.filter(s => (s.kelas || "Tanpa Kelas") === studentClassFilter).sort((a, b) => a.nama.localeCompare(b.nama));
 
         return (
-          <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-surface-sunken border-b border-border text-[10px] font-mono tracking-wider text-gray-400 font-semibold uppercase">
-                    <th className="p-4">Nama Santri</th>
-                    <th className="p-4">Kelas</th>
-                    <th className="p-4">Gedung Asrama</th>
-                    <th className="p-4">HP Wali / Orang Tua</th>
-                    <th className="p-4">Ekstrakurikuler</th>
-                    {!isReadOnly && <th className="p-4 text-right">Aksi</th>}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50 text-xs text-gray-600">
-                  {sortedClasses.length === 0 && (
-                    <tr>
-                      <td colSpan={6} className="p-8 text-center text-gray-400">Tidak ada data siswa yang ditemukan.</td>
+          <div className="space-y-4">
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setStudentClassFilter("Semua")}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                  studentClassFilter === "Semua"
+                    ? "bg-maroon-500 text-white shadow-md"
+                    : "bg-white border border-gray-200 text-gray-600 hover:border-maroon-300 hover:text-maroon-600"
+                }`}
+              >
+                Semua Kelas
+              </button>
+              {allClasses.map(kelas => (
+                <button
+                  key={kelas}
+                  onClick={() => setStudentClassFilter(kelas)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                    studentClassFilter === kelas
+                      ? "bg-maroon-500 text-white shadow-md"
+                      : "bg-white border border-gray-200 text-gray-600 hover:border-maroon-300 hover:text-maroon-600"
+                  }`}
+                >
+                  {kelas}
+                </button>
+              ))}
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-surface-sunken border-b border-border text-[10px] font-mono tracking-wider text-gray-400 font-semibold uppercase">
+                      <th className="p-4">Nama Santri</th>
+                      <th className="p-4">Kelas</th>
+                      <th className="p-4">Gedung Asrama</th>
+                      <th className="p-4">HP Wali / Orang Tua</th>
+                      <th className="p-4">Ekstrakurikuler</th>
+                      {!isReadOnly && <th className="p-4 text-right">Aksi</th>}
                     </tr>
-                  )}
-                  {sortedClasses.map((kelas) => {
-                    // Sort students by name alphabetically within the class
-                    const sortedStudents = groupedStudents[kelas].sort((a, b) => a.nama.localeCompare(b.nama));
-                    
-                    return (
-                      <React.Fragment key={kelas}>
-                        <tr className="bg-gray-50/80 border-y border-gray-100">
-                          <td colSpan={6} className="p-3 pl-4 font-bold text-gray-700 text-[11px] uppercase tracking-wider">
-                            Kelas {kelas} <span className="ml-2 px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 text-[9px]">{sortedStudents.length} Siswa</span>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50 text-xs text-gray-600">
+                    {displayStudents.length === 0 && (
+                      <tr>
+                        <td colSpan={6} className="p-8 text-center text-gray-400">Tidak ada data siswa yang ditemukan.</td>
+                      </tr>
+                    )}
+                    {displayStudents.map((s) => (
+                      <tr key={s.id} className="hover:bg-surface-sunken transition-colors">
+                        <td className="p-4 font-bold text-gray-800">{s.nama}</td>
+                        <td className="p-4">{s.kelas}</td>
+                        <td className="p-4 flex items-center gap-1.5">
+                          <Home size={12} className="text-gray-400 shrink-0" />
+                          <span className="truncate max-w-44">{s.asrama}</span>
+                        </td>
+                        <td className="p-4 font-mono">{s.noHpOrtu}</td>
+                        <td className="p-4">
+                          <div className="flex flex-wrap gap-1">
+                            {s.ekskulIds.map((eid) => {
+                              const name = database.extracurriculars.find((e) => e.id === eid)?.nama;
+                              return (
+                                <span
+                                  key={eid}
+                                  className="px-2 py-0.5 rounded text-[10px] font-medium bg-maroon-50 text-maroon-700 border border-maroon-100 shrink-0"
+                                >
+                                  {name || "Ekskul"}
+                                </span>
+                              );
+                            })}
+                          </div>
+                        </td>
+                        {!isReadOnly && (
+                          <td className="p-4 text-right">
+                            <div className="inline-flex gap-2">
+                              <button
+                                onClick={() => handleEdit("siswa", s.id)}
+                                className="p-1.5 rounded-lg border border-border hover:text-maroon-500 transition-colors bg-white"
+                              >
+                                <Edit2 size={12} />
+                              </button>
+                              <button
+                                onClick={() => handleDelete("siswa", s.id)}
+                                className="p-1.5 rounded-lg border border-border hover:text-navy-500 transition-colors bg-white"
+                              >
+                                <Trash2 size={12} />
+                              </button>
+                            </div>
                           </td>
-                        </tr>
-                        {sortedStudents.map((s) => (
-                          <tr key={s.id} className="hover:bg-surface-sunken transition-colors">
-                            <td className="p-4 font-bold text-gray-800">{s.nama}</td>
-                            <td className="p-4">{s.kelas}</td>
-                            <td className="p-4 flex items-center gap-1.5">
-                              <Home size={12} className="text-gray-400 shrink-0" />
-                              <span className="truncate max-w-44">{s.asrama}</span>
-                            </td>
-                            <td className="p-4 font-mono">{s.noHpOrtu}</td>
-                            <td className="p-4">
-                              <div className="flex flex-wrap gap-1">
-                                {s.ekskulIds.map((eid) => {
-                                  const name = database.extracurriculars.find((e) => e.id === eid)?.nama;
-                                  return (
-                                    <span
-                                      key={eid}
-                                      className="px-2 py-0.5 rounded text-[10px] font-medium bg-maroon-50 text-maroon-700 border border-maroon-100 shrink-0"
-                                    >
-                                      {name || "Ekskul"}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            </td>
-                            {!isReadOnly && (
-                              <td className="p-4 text-right">
-                                <div className="inline-flex gap-2">
-                                  <button
-                                    onClick={() => handleEdit("siswa", s.id)}
-                                    className="p-1.5 rounded-lg border border-border hover:text-maroon-500 transition-colors bg-white"
-                                  >
-                                    <Edit2 size={12} />
-                                  </button>
-                                  <button
-                                    onClick={() => handleDelete("siswa", s.id)}
-                                    className="p-1.5 rounded-lg border border-border hover:text-navy-500 transition-colors bg-white"
-                                  >
-                                    <Trash2 size={12} />
-                                  </button>
-                                </div>
-                              </td>
-                            )}
-                          </tr>
-                        ))}
-                      </React.Fragment>
-                    );
-                  })}
-                </tbody>
-              </table>
+                        )}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         );
