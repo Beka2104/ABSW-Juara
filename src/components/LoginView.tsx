@@ -148,8 +148,7 @@ export default function LoginView({
   const handleRegisterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!regName.trim()) { setErrorMsg("Nama lengkap wajib diisi."); return; }
-    if (regRole === "Siswa" && !regDorm.trim()) { setErrorMsg("Kamar & Gedung Asrama wajib diisi."); return; }
-    if (!regPhone.trim()) { setErrorMsg("Nomor HP wajib diisi."); return; }
+    if (regRole !== "Siswa" && !regPhone.trim()) { setErrorMsg("Nomor HP wajib diisi."); return; }
     if (regRole === "Pelatih" && !regSkill.trim()) { setErrorMsg("Keahlian & Lisensi wajib diisi."); return; }
     if (regRole === "Pembina Ekstrakurikuler" && !regPosition.trim()) { setErrorMsg("Jabatan wajib diisi."); return; }
     if (!regPassword) { setErrorMsg("Kata sandi baru wajib dibuat."); return; }
@@ -163,8 +162,8 @@ export default function LoginView({
         id: newId,
         nama: regName.trim(),
         kelas: regClass,
-        asrama: regDorm.trim(),
-        noHpOrtu: regPhone.trim(),
+        asrama: "-",
+        noHpOrtu: "-",
         ekskulIds: [],
         riwayat: [
           {
@@ -452,24 +451,17 @@ export default function LoginView({
                   )}
                 </div>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {regRole === "Siswa" && (
+                {regRole !== "Siswa" && (
+                  <div className="grid grid-cols-1 gap-4">
                     <div>
-                      <label className={labelClass}>Gedung & Kamar Asrama</label>
+                      <label className={labelClass}>Nomor HP Kontak</label>
                       <div className="relative">
-                        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Home size={14} /></span>
-                        <input type="text" required placeholder="Gdg Shalahuddin Kamar 5" value={regDorm} onChange={(e) => setRegDorm(e.target.value)} className={inputClass} />
+                        <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Phone size={14} /></span>
+                        <input type="tel" required placeholder="+62812345678" value={regPhone} onChange={(e) => setRegPhone(e.target.value)} className={inputClass} />
                       </div>
                     </div>
-                  )}
-                  <div className={regRole !== "Siswa" ? "col-span-2 sm:col-span-2" : ""}>
-                    <label className={labelClass}>{regRole === "Siswa" ? "No. HP Orang Tua" : "Nomor HP Kontak"}</label>
-                    <div className="relative">
-                      <span className="absolute inset-y-0 left-3 flex items-center text-slate-400"><Phone size={14} /></span>
-                      <input type="tel" required placeholder="+62812345678" value={regPhone} onChange={(e) => setRegPhone(e.target.value)} className={inputClass} />
-                    </div>
                   </div>
-                </div>
+                )}
                 <div>
                   <label className={labelClass}>Kata Sandi Baru</label>
                   <div className="relative">

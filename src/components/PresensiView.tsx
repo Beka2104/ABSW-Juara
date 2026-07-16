@@ -480,7 +480,7 @@ export default function PresensiView({ database, setDatabase, currentRole }: Pre
                             </div>
                             <div>
                               <p className="font-bold text-slate-800">{siswa.nama}</p>
-                              <p className="text-[10px] text-slate-400 mt-0.5">{siswa.kelas} • {siswa.asrama.split(" ")[1] || "Asrama"}</p>
+                              <p className="text-[10px] text-slate-400 mt-0.5">{siswa.kelas}</p>
                             </div>
                           </td>
                           <td className="p-3">

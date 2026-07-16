@@ -47,7 +47,7 @@ export default function MasterDataView({
   });
   
   const [studentForm, setStudentForm] = useState<Partial<Student>>({
-    nama: "", kelas: "X-A IPA", asrama: "", noHpOrtu: "", ekskulIds: [], riwayat: []
+    nama: "", kelas: "X-A IPA", asrama: "-", noHpOrtu: "-", ekskulIds: [], riwayat: []
   });
 
   const [coachForm, setCoachForm] = useState<Partial<Coach>>({
@@ -71,7 +71,7 @@ export default function MasterDataView({
       pelatihId: "", pembinaId: "", kuota: 30, status: "Aktif", deskripsi: "", logo: "Target", galeri: []
     });
     setStudentForm({
-      nama: "", kelas: "X-A IPA", asrama: "", noHpOrtu: "", ekskulIds: [], riwayat: []
+      nama: "", kelas: "X-A IPA", asrama: "-", noHpOrtu: "-", ekskulIds: [], riwayat: []
     });
     setCoachForm({
       nama: "", keahlian: "", noHp: "", email: "", honor: 1000000, status: "Aktif", riwayatMengajar: []
@@ -432,7 +432,7 @@ export default function MasterDataView({
     if (!file) return;
 
     const processData = (data: any[]) => {
-      // expected columns: Nama Siswa, Kelas, Asrama, HP Orang Tua
+      // expected columns: Nama Siswa, Kelas, Nama Eskul
       const updatedDb = { ...database };
       const newStudents: Student[] = [];
       const newUsers: typeof updatedDb.users = [];
@@ -440,18 +440,25 @@ export default function MasterDataView({
       data.forEach((row, index) => {
         const nama = row["Nama Siswa"] || row["nama"] || Object.values(row)[0];
         const kelas = row["Kelas"] || row["kelas"] || Object.values(row)[1] || "-";
-        const asrama = row["Asrama"] || row["asrama"] || Object.values(row)[2] || "-";
-        const noHpOrtu = row["HP Orang Tua"] || row["No HP"] || row["no_hp"] || Object.values(row)[3] || "-";
+        const namaEkskul = row["Nama Eskul"] || row["ekskul"] || Object.values(row)[2] || "";
 
         if (nama) {
           const newId = `siswa-${Date.now()}-${index}`;
+          let ekskulIds: string[] = [];
+          
+          if (namaEkskul) {
+            const ekskulStr = String(namaEkskul).toLowerCase().trim();
+            const ekskul = updatedDb.extracurriculars.find(e => e.nama.toLowerCase().trim() === ekskulStr);
+            if (ekskul) ekskulIds.push(ekskul.id);
+          }
+
           newStudents.push({
             id: newId,
             nama: String(nama).trim(),
             kelas: String(kelas).trim(),
-            asrama: String(asrama).trim(),
-            noHpOrtu: String(noHpOrtu).trim(),
-            ekskulIds: [],
+            asrama: "-",
+            noHpOrtu: "-",
+            ekskulIds: ekskulIds,
             riwayat: [{ tanggal: new Date().toISOString().substring(0, 10), kegiatan: "Pendaftaran Akun", keterangan: "Siswa bergabung ke sistem AEMS via Upload." }]
           });
 
@@ -862,10 +869,8 @@ export default function MasterDataView({
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-surface-sunken border-b border-border text-[10px] font-mono tracking-wider text-gray-400 font-semibold uppercase">
-                      <th className="p-4">Nama Santri</th>
+                      <th className="p-4">Nama Siswa</th>
                       <th className="p-4">Kelas</th>
-                      <th className="p-4">Gedung Asrama</th>
-                      <th className="p-4">HP Wali / Orang Tua</th>
                       <th className="p-4">Ekstrakurikuler</th>
                       {!isReadOnly && <th className="p-4 text-right">Aksi</th>}
                     </tr>
@@ -880,11 +885,6 @@ export default function MasterDataView({
                       <tr key={s.id} className="hover:bg-surface-sunken transition-colors">
                         <td className="p-4 font-bold text-gray-800">{s.nama}</td>
                         <td className="p-4">{s.kelas}</td>
-                        <td className="p-4 flex items-center gap-1.5">
-                          <Home size={12} className="text-gray-400 shrink-0" />
-                          <span className="truncate max-w-44">{s.asrama}</span>
-                        </td>
-                        <td className="p-4 font-mono">{s.noHpOrtu}</td>
                         <td className="p-4">
                           <div className="flex flex-wrap gap-1">
                             {s.ekskulIds.map((eid) => {
@@ -1304,27 +1304,34 @@ export default function MasterDataView({
                         className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"
                       />
                     </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Gedung / Kamar Asrama</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g., Shalahuddin Al-Ayyubi Kamar 4"
-                        value={studentForm.asrama}
-                        onChange={(e) => setStudentForm({ ...studentForm, asrama: e.target.value })}
-                        className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"
-                      />
-                    </div>
                     <div className="col-span-2">
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">No HP Orang Tua / Wali</label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g., +62812345678"
-                        value={studentForm.noHpOrtu}
-                        onChange={(e) => setStudentForm({ ...studentForm, noHpOrtu: e.target.value })}
-                        className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"
-                      />
+                      <label className="block text-xs font-semibold text-gray-500 mb-2">Ekskul yang diikuti</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 bg-gray-50 border border-gray-200 rounded-lg max-h-48 overflow-y-auto">
+                        {database.extracurriculars.map((eks) => (
+                          <label key={eks.id} className="flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={studentForm.ekskulIds?.includes(eks.id)}
+                              onChange={(e) => {
+                                const checked = e.target.checked;
+                                const current = studentForm.ekskulIds || [];
+                                if (checked) {
+                                  setStudentForm({ ...studentForm, ekskulIds: [...current, eks.id] });
+                                } else {
+                                  setStudentForm({ ...studentForm, ekskulIds: current.filter(id => id !== eks.id) });
+                                }
+                              }}
+                              className="rounded text-maroon-500 accent-maroon-500"
+                            />
+                            <span className="truncate">{eks.nama}</span>
+                          </label>
+                        ))}
+                        {database.extracurriculars.length === 0 && (
+                          <div className="col-span-full text-center text-gray-400 italic text-xs py-2">
+                            Belum ada data ekstrakurikuler.
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </>
@@ -1614,12 +1621,11 @@ export default function MasterDataView({
                         <button
                           onClick={() => {
                             const csvRows = [
-                              ["No", "Nama Siswa", "Kelas", "Asrama"],
+                              ["No", "Nama Siswa", "Kelas"],
                               ...students.map((s, idx) => [
                                 idx + 1,
                                 `"${s.nama}"`,
-                                `"${s.kelas}"`,
-                                `"${s.asrama}"`
+                                `"${s.kelas}"`
                               ])
                             ];
                             const csvContent = csvRows.map(row => row.join(",")).join("\n");
@@ -1649,7 +1655,6 @@ export default function MasterDataView({
                               <th className="py-2.5 px-4 font-bold text-gray-500 w-12 text-center">No</th>
                               <th className="py-2.5 px-4 font-bold text-gray-500">Nama Siswa</th>
                               <th className="py-2.5 px-4 font-bold text-gray-500 w-24">Kelas</th>
-                              <th className="py-2.5 px-4 font-bold text-gray-500">Asrama</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-gray-100 bg-white">
@@ -1659,7 +1664,6 @@ export default function MasterDataView({
                                   <td className="py-2.5 px-4 text-gray-500 text-center font-mono">{idx + 1}</td>
                                   <td className="py-2.5 px-4 font-medium text-gray-800">{s.nama}</td>
                                   <td className="py-2.5 px-4 text-gray-600 font-mono">{s.kelas}</td>
-                                  <td className="py-2.5 px-4 text-gray-600">{s.asrama}</td>
                                 </tr>
                               ))
                             ) : (
