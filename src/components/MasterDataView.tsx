@@ -970,10 +970,7 @@ export default function MasterDataView({
                     <span className="truncate">{c.email}</span>
                   </div>
                   <div className="flex items-center gap-1.5 col-span-2">
-                    <DollarSign size={12} className="text-maroon-400" />
-                    <span className="font-semibold text-maroon-600">
-                      Honor per Pertemuan: Rp {c.honor.toLocaleString("id-ID")}
-                    </span>
+                    {/* Honor removed */}
                   </div>
                 </div>
               </div>
@@ -1382,16 +1379,6 @@ export default function MasterDataView({
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Honorarium per Pertemuan (IDR)</label>
-                      <input
-                        type="number"
-                        required
-                        value={coachForm.honor}
-                        onChange={(e) => setCoachForm({ ...coachForm, honor: Number(e.target.value) })}
-                        className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"
-                      />
-                    </div>
-                    <div>
                       <label className="block text-xs font-semibold text-gray-500 mb-1">Status Keaktifan</label>
                       <select
                         value={coachForm.status}
@@ -1519,7 +1506,6 @@ export default function MasterDataView({
                       >
                         <option value="Koordinator Ekstrakurikuler">Admin / Koordinator (Akses Penuh)</option>
                         <option value="Kepala Sekolah">Kepala Sekolah (Monitoring Saja)</option>
-                        <option value="Pelatih">Pelatih (Penilaian, Presensi, Dokumentasi)</option>
                         <option value="Pembina Ekstrakurikuler">Pembina Ekstrakurikuler (Presensi & Evaluasi)</option>
                         <option value="Siswa">Siswa (Pendaftaran & Presensi Mandiri)</option>
                       </select>
