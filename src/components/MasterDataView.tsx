@@ -961,16 +961,9 @@ export default function MasterDataView({
                   </span>
                 </div>
                 <div className="pt-3 border-t border-gray-50 grid grid-cols-2 gap-2 text-xs text-gray-500">
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex items-center gap-1.5 col-span-2">
                     <Phone size={12} className="text-gray-400" />
                     <span className="font-mono">{c.noHp}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Mail size={12} className="text-gray-400" />
-                    <span className="truncate">{c.email}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 col-span-2">
-                    {/* Honor removed */}
                   </div>
                 </div>
               </div>
@@ -1365,16 +1358,6 @@ export default function MasterDataView({
                         required
                         value={coachForm.noHp}
                         onChange={(e) => setCoachForm({ ...coachForm, noHp: e.target.value })}
-                        className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-semibold text-gray-500 mb-1">Email</label>
-                      <input
-                        type="email"
-                        required
-                        value={coachForm.email}
-                        onChange={(e) => setCoachForm({ ...coachForm, email: e.target.value })}
                         className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"
                       />
                     </div>
