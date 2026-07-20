@@ -243,24 +243,24 @@ export default function App() {
       case "master":
         return <MasterDataView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentId={currentStudentId} />;
       case "sop":
-        return <SopView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
+        return <SopView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentName={currentStudentName} />;
       case "jadwal":
-        return <JadwalView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
+        return <JadwalView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentName={currentStudentName} />;
       case "presensi":
-        return <PresensiView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
+        return <PresensiView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentName={currentStudentName} />;
       case "monitoring":
         return <MonitoringView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
       case "perlombaan":
-        return <CompetitionsView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
+        return <CompetitionsView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentName={currentStudentName} />;
       case "penilaian":
       case "evaluasi":
-        return <AssessmentsView database={database} setDatabase={saveDatabase} currentRole={currentRole} initialTab="penilaian" />;
+        return <AssessmentsView database={database} setDatabase={saveDatabase} currentRole={currentRole} initialTab="penilaian" currentStudentName={currentStudentName} />;
       case "rapat":
-        return <MeetingsView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
+        return <MeetingsView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentName={currentStudentName} />;
       case "dokumen":
-        return <DocumentsView database={database} setDatabase={saveDatabase} currentRole={currentRole} />;
+        return <DocumentsView database={database} setDatabase={saveDatabase} currentRole={currentRole} currentStudentName={currentStudentName} />;
       case "laporan":
-        return <AssessmentsView database={database} setDatabase={saveDatabase} currentRole={currentRole} initialTab="raport" />;
+        return <AssessmentsView database={database} setDatabase={saveDatabase} currentRole={currentRole} initialTab="raport" currentStudentName={currentStudentName} />;
       default:
         return (
           <div className="p-12 text-center text-slate-400">

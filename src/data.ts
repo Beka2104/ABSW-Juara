@@ -558,7 +558,7 @@ export const initialDatabase: AppDatabase = {
       undangan: ["Kepala Sekolah", "Koordinator Ekstrakurikuler", "Semua Pembina Ekskul", "Semua Pelatih"],
       presensiList: [
         { nama: "Ustadz H. Gozali, M.Pd. (Kepala Sekolah)", peran: "Kepala Sekolah", hadir: true },
-        { nama: "Ustadz Reza Firmansyah, S.Pd. (Koordinator)", peran: "Koordinator", hadir: true },
+        { nama: "Beny Siswanto, S.Kom. (Koordinator)", peran: "Koordinator", hadir: true },
         { nama: "Ustadz Muhammad Wildan, M.Pd.", peran: "Pembina Panahan", hadir: true },
         { nama: "Ustadz Hardi Supriatna", peran: "Pelatih Panahan", hadir: true },
         { nama: "Ir. Ahmad Sholahudin", peran: "Pelatih Robotika", hadir: false }
@@ -587,7 +587,7 @@ export const initialDatabase: AppDatabase = {
       status: "Disetujui",
       pengaju: "Koordinator Ekstrakurikuler",
       fileUrl: "/docs/SK_Kesiswaan_2026.pdf",
-      tandaTanganDigital: "Ust. Reza"
+      tandaTanganDigital: "Beny Siswanto"
     },
     {
       id: "doc-2",
@@ -602,7 +602,7 @@ export const initialDatabase: AppDatabase = {
       status: "Disetujui",
       pengaju: "Koordinator Ekstrakurikuler",
       fileUrl: "/docs/SOP_Beasiswa_Prestasi.pdf",
-      tandaTanganDigital: "Ust. Reza"
+      tandaTanganDigital: "Beny Siswanto"
     },
     {
       id: "doc-4",
@@ -667,7 +667,7 @@ export const initialDatabase: AppDatabase = {
     {
       id: "log-1",
       tanggal: "2026-07-03 18:00:15",
-      user: "Ustadz Reza (Koordinator)",
+      user: "Beny Siswanto (Koordinator)",
       peran: "Koordinator Ekstrakurikuler",
       aktivitas: "Melakukan Pembaruan Data Siswa",
       detail: "Menambahkan ekstrakurikuler Robotics ke riwayat santri Muhammad Zaki Al-Fatih."
@@ -686,7 +686,7 @@ export const initialDatabase: AppDatabase = {
       id: "user-admin",
       username: "admin",
       password: "admin123",
-      nama: "Ustadz Reza Firmansyah",
+      nama: "Beny Siswanto, S.Kom.",
       role: "Koordinator Ekstrakurikuler"
     },
     {

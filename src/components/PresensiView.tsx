@@ -3,12 +3,13 @@ import { Users, Clock, Download, AlertCircle, Check, UserCheck, UserX, FileSprea
 import { AppDatabase, PresensiRecord, Role } from "../types";
 
 interface PresensiViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
 }
 
-export default function PresensiView({ database, setDatabase, currentRole }: PresensiViewProps) {
+export default function PresensiView({ database, setDatabase, currentRole, currentStudentName }: PresensiViewProps) {
   // Current date defaults to today
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     return new Date().toISOString().substring(0, 10);
@@ -111,7 +112,7 @@ export default function PresensiView({ database, setDatabase, currentRole }: Pre
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah (Pembina)",
+      user: (currentStudentName || "Pengguna") + " (Pembina)",
       peran: currentRole,
       aktivitas: "Manual Presensi",
       detail: `Memperbarui presensi ${studentObj.nama} di ekskul ${ekskulObj.nama} menjadi [${status}]`
@@ -178,7 +179,7 @@ export default function PresensiView({ database, setDatabase, currentRole }: Pre
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah (Pembina)",
+      user: (currentStudentName || "Pengguna") + " (Pembina)",
       peran: currentRole,
       aktivitas: "Presensi Masal",
       detail: `Menandai seluruh santri ekskul ${ekskulObj.nama} sebagai [${status}]`
@@ -205,7 +206,7 @@ export default function PresensiView({ database, setDatabase, currentRole }: Pre
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah (Pembina)",
+      user: (currentStudentName || "Pengguna") + " (Pembina)",
       peran: currentRole,
       aktivitas: "Hapus Presensi",
       detail: `Menghapus catatan presensi ${record.namaSiswa} untuk tanggal ${record.tanggal}`
@@ -329,7 +330,7 @@ export default function PresensiView({ database, setDatabase, currentRole }: Pre
           </div>
           <div className="min-w-0">
             <p className="text-[9px] uppercase font-bold tracking-wider text-[#FEF9C3]">Pelatih Logged-In</p>
-            <p className="text-xs font-bold truncate">Ust. Reza Firmansyah, S.Pd.</p>
+            <p className="text-xs font-bold truncate">{currentStudentName || "Pengguna"}, S.Pd.</p>
             <p className="text-[9px] opacity-75 truncate">Akses: {currentRole}</p>
           </div>
         </div>

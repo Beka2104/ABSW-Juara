@@ -20,12 +20,13 @@ import {
 import { AppDatabase, Competition, Role } from "../types";
 
 interface CompetitionsViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
 }
 
-export default function CompetitionsView({ database, setDatabase, currentRole }: CompetitionsViewProps) {
+export default function CompetitionsView({ database, setDatabase, currentRole, currentStudentName }: CompetitionsViewProps) {
   const [filterStatus, setFilterStatus] = useState<"ALL" | "Pengajuan" | "Disetujui" | "Berjalan" | "Selesai">("ALL");
   const [showFormModal, setShowFormModal] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -87,7 +88,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole }:
       updatedDb.auditLogs.unshift({
         id: `log-${Date.now()}`,
         tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-        user: "Ust. Reza Firmansyah",
+        user: (currentStudentName || "Pengguna") ,
         peran: currentRole,
         aktivitas: "Hapus Perlombaan",
         detail: `Menghapus kompetisi ID: ${id}`
@@ -129,7 +130,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole }:
         tanggal: formDate,
         tempat: formVenue,
         peserta: ["Farhan Syihabuddin", "Zaidan Al-Khair"],
-        pendamping: "Ust. Reza Firmansyah",
+        pendamping: (currentStudentName || "Pengguna") ,
         anggaran: formBudget,
         status: formStatus,
         prestasi: parsedPrestasi
@@ -141,7 +142,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole }:
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: editId ? "Edit Kompetisi" : "Tambah Kompetisi",
       detail: actionLog

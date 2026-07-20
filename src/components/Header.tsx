@@ -374,7 +374,7 @@ export default function Header({
           
           <div className="hidden sm:block text-left max-w-[110px]">
             <div className="text-xs font-semibold text-slate-800 truncate">
-              {currentStudentName || "Ust. Reza Firmansyah"}
+              {currentStudentName || "Pengguna"}
             </div>
             <div className="text-[10px] text-slate-400 truncate mt-0.5">
               {currentRole}

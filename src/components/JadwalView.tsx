@@ -17,12 +17,13 @@ import {
 import { AppDatabase, ScheduleEvent, Role } from "../types";
 
 interface JadwalViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
 }
 
-export default function JadwalView({ database, setDatabase, currentRole }: JadwalViewProps) {
+export default function JadwalView({ database, setDatabase, currentRole, currentStudentName }: JadwalViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date(2026, 6, 1)); // Fixed starting July 2026
   const [calendarMode, setCalendarMode] = useState<"monthly" | "yearly">("monthly");
   
@@ -150,7 +151,7 @@ export default function JadwalView({ database, setDatabase, currentRole }: Jadwa
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: selectedEvent ? "Edit Jadwal" : "Tambah Jadwal",
       detail: `Menyimpan jadwal baru: ${formTitle}`
@@ -199,7 +200,7 @@ export default function JadwalView({ database, setDatabase, currentRole }: Jadwa
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: "Drag and Drop Jadwal",
       detail: `Memindahkan agenda "${event.judul}" ke tanggal ${newDateStr}`

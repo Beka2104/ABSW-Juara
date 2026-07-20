@@ -3,12 +3,13 @@ import { FileText, Printer, Plus, Edit2, Trash2, X, Check, Calendar, MapPin, Clo
 import { AppDatabase, Meeting, Role } from "../types";
 
 interface MeetingsViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
 }
 
-export default function MeetingsView({ database, setDatabase, currentRole }: MeetingsViewProps) {
+export default function MeetingsView({ database, setDatabase, currentRole, currentStudentName }: MeetingsViewProps) {
   const [selectedMeetingId, setSelectedMeetingId] = useState<string>(database.meetings[0]?.id || "");
   const [showFormModal, setShowFormModal] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -58,7 +59,7 @@ export default function MeetingsView({ database, setDatabase, currentRole }: Mee
       updatedDb.auditLogs.unshift({
         id: `log-${Date.now()}`,
         tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-        user: "Ust. Reza Firmansyah",
+        user: (currentStudentName || "Pengguna") ,
         peran: currentRole,
         aktivitas: "Hapus Rapat",
         detail: `Menghapus berita acara rapat ID: ${id}`
@@ -95,7 +96,7 @@ export default function MeetingsView({ database, setDatabase, currentRole }: Mee
         tanggal: formDate,
         waktu: formTime,
         tempat: formVenue,
-        pimpinanRapat: "Ust. Reza Firmansyah",
+        pimpinanRapat: (currentStudentName || "Pengguna") ,
         pesertaHadir: ["Ust. Gozali", "Coach Jaka", "Coach Hendra", "Ust. Wildan"],
         notulensi: formNotulen
       };
@@ -106,7 +107,7 @@ export default function MeetingsView({ database, setDatabase, currentRole }: Mee
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: editId ? "Edit Rapat" : "Tambah Rapat",
       detail: actionLog

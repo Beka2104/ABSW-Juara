@@ -16,12 +16,13 @@ import {
 import { AppDatabase, Sop, Role } from "../types";
 
 interface SopViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
 }
 
-export default function SopView({ database, setDatabase, currentRole }: SopViewProps) {
+export default function SopView({ database, setDatabase, currentRole, currentStudentName }: SopViewProps) {
   const [selectedSopId, setSelectedSopId] = useState<string>(database.sops[0]?.id || "");
   const [showEditModal, setShowEditModal] = useState(false);
   const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -89,7 +90,7 @@ export default function SopView({ database, setDatabase, currentRole }: SopViewP
               id: `rh-${Date.now()}`,
               tanggal: new Date().toISOString().substring(0, 10),
               versi: sop.versi,
-              diubahOleh: "Ust. Reza Firmansyah (Koordinator)",
+              diubahOleh: (currentStudentName || "Pengguna") + " (Koordinator)",
               deskripsi: `Melampirkan berkas fisik SOP: ${file.name}`
             });
             return {
@@ -106,7 +107,7 @@ export default function SopView({ database, setDatabase, currentRole }: SopViewP
         updatedDb.auditLogs.unshift({
           id: `log-${Date.now()}`,
           tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-          user: "Ust. Reza Firmansyah",
+          user: (currentStudentName || "Pengguna") ,
           peran: currentRole,
           aktivitas: "Lampirkan Berkas SOP",
           detail: `Melampirkan berkas "${file.name}" ke dokumen SOP: ${selectedSop?.judul}`
@@ -244,7 +245,7 @@ export default function SopView({ database, setDatabase, currentRole }: SopViewP
           id: `rh-${Date.now()}`,
           tanggal: new Date().toISOString().substring(0, 10),
           versi: editVersion,
-          diubahOleh: "Ust. Reza Firmansyah (Koordinator)",
+          diubahOleh: (currentStudentName || "Pengguna") + " (Koordinator)",
           deskripsi: editNotes || "Melakukan revisi konten SOP."
         });
         return {
@@ -264,7 +265,7 @@ export default function SopView({ database, setDatabase, currentRole }: SopViewP
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: "Revisi SOP",
       detail: `Membuat revisi baru untuk SOP: ${editTitle}`
@@ -290,7 +291,7 @@ export default function SopView({ database, setDatabase, currentRole }: SopViewP
           id: `rh-${Date.now()}`,
           tanggal: new Date().toISOString().substring(0, 10),
           versi: "v1.0",
-          diubahOleh: "Ust. Reza Firmansyah (Koordinator)",
+          diubahOleh: (currentStudentName || "Pengguna") + " (Koordinator)",
           deskripsi: "Penerbitan dokumen SOP pertama kali."
         }
       ]
@@ -300,7 +301,7 @@ export default function SopView({ database, setDatabase, currentRole }: SopViewP
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: "Tambah SOP",
       detail: `Menerbitkan dokumen SOP baru: ${createTitle}`

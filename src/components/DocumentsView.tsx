@@ -3,12 +3,13 @@ import { FileText, CheckCircle, Clock, XCircle, AlertTriangle, Plus, Edit2, Tras
 import { AppDatabase, DocumentRecord, Role } from "../types";
 
 interface DocumentsViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
 }
 
-export default function DocumentsView({ database, setDatabase, currentRole }: DocumentsViewProps) {
+export default function DocumentsView({ database, setDatabase, currentRole, currentStudentName }: DocumentsViewProps) {
   const [selectedDocId, setSelectedDocId] = useState<string>(database.documents[0]?.id || "");
   const [filterType, setFilterType] = useState<"ALL" | "Surat Perizinan" | "Sertifikat" | "Persyaratan Lomba" | "Biodata Siswa">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
@@ -101,7 +102,7 @@ export default function DocumentsView({ database, setDatabase, currentRole }: Do
           ? {
               ...doc,
               status: "Disetujui" as any,
-              tandaTanganDigital: " Ust. Reza Firmansyah "
+              tandaTanganDigital: (currentStudentName || "Pengguna")
             }
           : doc
       );
@@ -166,7 +167,7 @@ export default function DocumentsView({ database, setDatabase, currentRole }: Do
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: `Approval Dokumen`,
       detail: `Mengubah status dokumen "${docObj?.judul}" menjadi: ${action}`

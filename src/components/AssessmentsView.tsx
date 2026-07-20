@@ -15,13 +15,14 @@ import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianG
 import { AppDatabase, Assessment, Evaluation, Role } from "../types";
 
 interface AssessmentsViewProps {
+  currentStudentName?: string;
   database: AppDatabase;
   setDatabase: (db: AppDatabase) => void;
   currentRole: Role;
   initialTab?: "penilaian" | "raport" | "evaluasi";
 }
 
-export default function AssessmentsView({ database, setDatabase, currentRole, initialTab }: AssessmentsViewProps) {
+export default function AssessmentsView({ database, setDatabase, currentRole, initialTab, currentStudentName }: AssessmentsViewProps) {
   const [activeTab, setActiveTab] = useState<"penilaian" | "raport" | "evaluasi">(initialTab || "penilaian");
   const [selectedStudentId, setSelectedStudentId] = useState<string>(database.students[0]?.id || "");
 
@@ -103,7 +104,7 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
     updatedDb.auditLogs.unshift({
       id: `log-${Date.now()}`,
       tanggal: new Date().toISOString().replace("T", " ").substring(0, 19),
-      user: "Ust. Reza Firmansyah",
+      user: (currentStudentName || "Pengguna") ,
       peran: currentRole,
       aktivitas: "Input Nilai Santri",
       detail: `Memasukkan nilai raport ekskul untuk: ${studentObj.nama} (${predikat})`

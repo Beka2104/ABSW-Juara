@@ -98,7 +98,7 @@ export default function DashboardView({
             </div>
           ) : (
             <p className="text-white/60 text-sm mt-2 leading-relaxed max-w-lg">
-              Selamat datang, <strong className="text-white/90">{currentStudentName || "Ust. Reza Firmansyah, S.Pd."}</strong> sebagai {currentRole}.
+              Selamat datang, <strong className="text-white/90">{currentStudentName || "Pengguna"}</strong> sebagai {currentRole}.
               Kelola seluruh ekosistem ekstrakurikuler dalam satu sistem terintegrasi.
             </p>
           )}
