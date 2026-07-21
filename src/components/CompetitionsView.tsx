@@ -32,7 +32,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
   const [editId, setEditId] = useState<string | null>(null);
   
   const [viewMode, setViewMode] = useState<"card" | "calendar">("calendar");
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 7, 1)); // Fixed starting August 2026 (since Bogor Open is Aug 15)
+  const [currentDate, setCurrentDate] = useState(new Date()); // Use current date as default
 
   // Form inputs
   const [formName, setFormName] = useState("");
@@ -59,7 +59,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
     setEditId(null);
     setFormName("");
     setFormEkskulId("");
-    setFormDate("2026-08-15");
+    setFormDate("");
     setFormVenue("");
     setFormBudget(1500000);
     setFormStatus("Pengajuan");
@@ -433,7 +433,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
                         <button
                           onClick={() => {
                             resetForm();
-                            setFormDate(cell.dateStr || "2026-08-15");
+                            setFormDate(cell.dateStr || "");
                             setShowFormModal(true);
                           }}
                           className="opacity-0 group-hover/cell:opacity-100 p-0.5 rounded bg-maroon-50 text-maroon-500 hover:bg-maroon-100 transition-all"

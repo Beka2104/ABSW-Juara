@@ -167,7 +167,7 @@ export default function JadwalView({ database, setDatabase, currentRole, current
     setSelectedEvent(null);
     setFormTitle("");
     setFormEkskulId("");
-    setFormDate(dateStr || "2026-07-04");
+    setFormDate(dateStr || "");
     setFormStart("16:00");
     setFormEnd("17:30");
     setFormVenue("");
@@ -404,7 +404,7 @@ export default function JadwalView({ database, setDatabase, currentRole, current
                   ...database.competitions.map(c => ({
                     id: c.id,
                     judul: `Lomba: ${c.nama || c.namaLomba}`,
-                    tanggal: c.tanggal || "2026-07-01",
+                    tanggal: c.tanggal,
                     color: "#f59e0b",
                     isComp: true,
                     keyId: `comp-${c.id}`

@@ -319,7 +319,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                   <div className="min-w-0 flex-1 space-y-1">
                     <p className="font-bold font-display truncate leading-tight">{doc.judul || doc.nama || "Dokumen Tanpa Judul"}</p>
                     <div className="flex items-center gap-1.5 text-[10px] text-gray-400 font-mono">
-                      <span>{doc.tanggalDibuat || doc.tanggalUpload || "2026-07-01"}</span>
+                      <span>{doc.tanggalDibuat || doc.tanggalUpload}</span>
                       <span>•</span>
                       <span>{eksName}</span>
                     </div>

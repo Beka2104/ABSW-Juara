@@ -276,30 +276,7 @@ export default function DashboardView({
           </div>
 
           {/* Announcements */}
-          <div className="bg-white border border-border p-5 rounded-2xl">
-            <h3 className="font-display font-bold text-sm text-slate-800 mb-3 flex items-center gap-2">
-              <Megaphone size={15} className="text-gold-500" />
-              Pengumuman Terbaru
-            </h3>
-            <div className="space-y-4">
-              <div className="pb-3 border-b border-border">
-                <span className="text-[9px] font-mono font-bold bg-maroon-50 text-maroon-500 px-1.5 py-0.5 rounded border border-maroon-100">PENTING</span>
-                <h4 className="text-xs font-semibold text-slate-800 mt-1.5">Pendaftaran Ekskul Ganjil 2026/2027 Dibuka</h4>
-                <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
-                  Seluruh Wali Kelas X mengarahkan santri melengkapi pendaftaran ekskul di portal.
-                </p>
-                <span className="text-[9px] text-slate-300 mt-2 block font-mono">Koordinator Ekskul • 2026-07-02</span>
-              </div>
-              <div>
-                <span className="text-[9px] font-mono font-bold bg-maroon-50 text-maroon-500 px-1.5 py-0.5 rounded border border-maroon-100">PRESTASI</span>
-                <h4 className="text-xs font-semibold text-slate-800 mt-1.5">Tim Hadroh Juara 1 Kab. Subang</h4>
-                <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
-                  Barakallah! Medali emas Festival Kemenag Subang 2026.
-                </p>
-                <span className="text-[9px] text-slate-300 mt-2 block font-mono">Kepala Sekolah • 2026-06-25</span>
-              </div>
-            </div>
-          </div>
+          <></>
         </div>
       </div>
     </div>

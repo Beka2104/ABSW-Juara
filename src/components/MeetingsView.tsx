@@ -35,7 +35,7 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
   const resetForm = () => {
     setEditId(null);
     setFormAgenda("");
-    setFormDate("2026-07-10");
+    setFormDate("");
     setFormTime("09:00 - 11:00");
     setFormVenue("");
     setFormNotulen("");

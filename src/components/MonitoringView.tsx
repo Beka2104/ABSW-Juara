@@ -54,29 +54,7 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
       setAiReport({
         score: "88/100",
         status: "Sangat Sehat",
-        risks: [
-          {
-            id: "r1",
-            level: "Sedang",
-            aspek: "Kebugaran Santri",
-            deskripsi: "Terdapat indikasi kelelahan fisik pada ekskul Panahan dan Berkuda akibat jadwal latihan siang hari di tengah musim panas.",
-            solusi: "Geser jam mulai latihan panahan dari 14:00 ke 16:00 WIB untuk mencegah risiko dehidrasi."
-          },
-          {
-            id: "r2",
-            level: "Tinggi",
-            aspek: "Absensi Santri",
-            deskripsi: "Ahmad Rayhan (X-B) menunjukkan tren penurunan motivasi kehadiran pada ekskul Robotik (Alpa 2x berturut-turut).",
-            solusi: "Minta Wali Kelas / Pembina melakukan konseling asrama untuk mengetahui kendala santri."
-          },
-          {
-            id: "r3",
-            level: "Rendah",
-            aspek: "Logistik Sarana",
-            deskripsi: "Kuota alat panah berkurang karena 3 busur rusak di pekan ini.",
-            solusi: "Segera lakukan repair & re-stok sarana olahraga untuk menghindari rebutan alat."
-          }
-        ],
+        risks: [],
         rekomendasi: "Jadwalkan rapat evaluasi pembina bersama pelatih di hari Ahad pekan ini untuk mematangkan SOP keselamatan berkuda."
       });
     }, 2200);
