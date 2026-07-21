@@ -330,7 +330,7 @@ export default function PresensiView({ database, setDatabase, currentRole, curre
           </div>
           <div className="min-w-0">
             <p className="text-[9px] uppercase font-bold tracking-wider text-[#FEF9C3]">Pelatih Logged-In</p>
-            <p className="text-xs font-bold truncate">{currentStudentName || "Pengguna"}, S.Pd.</p>
+            <p className="text-xs font-bold truncate">{currentStudentName || "Pengguna"}</p>
             <p className="text-[9px] opacity-75 truncate">Akses: {currentRole}</p>
           </div>
         </div>

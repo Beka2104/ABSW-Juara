@@ -404,7 +404,7 @@
         "Farhan Syihabuddin",
         "Zaidan Al-Khair"
       ],
-      "pendamping": "Ust. Reza Firmansyah",
+      "pendamping": "Beny Siswanto",
       "anggaran": 1500000,
       "status": "Pengajuan"
     }
@@ -521,7 +521,7 @@
           "hadir": true
         },
         {
-          "nama": "Ustadz Reza Firmansyah, S.Pd. (Koordinator)",
+          "nama": "Beny Siswanto, S.Kom. (Koordinator)",
           "peran": "Koordinator",
           "hadir": true
         },
@@ -586,7 +586,7 @@
       "status": "Disetujui",
       "pengaju": "Koordinator Ekstrakurikuler",
       "fileUrl": "/docs/SK_Kesiswaan_2026.pdf",
-      "tandaTanganDigital": "Ust. Reza"
+      "tandaTanganDigital": "Beny Siswanto"
     },
     {
       "id": "doc-2",
@@ -601,7 +601,7 @@
       "status": "Disetujui",
       "pengaju": "Koordinator Ekstrakurikuler",
       "fileUrl": "/docs/SOP_Beasiswa_Prestasi.pdf",
-      "tandaTanganDigital": "Ust. Reza"
+      "tandaTanganDigital": "Beny Siswanto"
     },
     {
       "id": "doc-4",
@@ -1042,7 +1042,7 @@
     {
       "id": "log-1783140148333",
       "tanggal": "2026-07-04 04:42:28",
-      "user": "Ust. Reza Firmansyah",
+      "user": "Beny Siswanto",
       "peran": "Pembina Ekstrakurikuler",
       "aktivitas": "Input Nilai Santri",
       "detail": "Memasukkan nilai raport ekskul untuk: Ahmad Rayhan Al-Ghifari (A (Sangat Baik))"
@@ -1050,7 +1050,7 @@
     {
       "id": "log-1783140111828",
       "tanggal": "2026-07-04 04:41:51",
-      "user": "Ust. Reza Firmansyah",
+      "user": "Beny Siswanto",
       "peran": "Pembina Ekstrakurikuler",
       "aktivitas": "Tambah Jadwal",
       "detail": "Menyimpan jadwal baru: Latihan Mingguan"
@@ -1058,7 +1058,7 @@
     {
       "id": "log-1783139697860",
       "tanggal": "2026-07-04 04:34:57",
-      "user": "Ust. Reza Firmansyah",
+      "user": "Beny Siswanto",
       "peran": "Pembina Ekstrakurikuler",
       "aktivitas": "Tambah Kompetisi",
       "detail": "Mengajukan perlombaan baru: asfera 2027"
@@ -1066,7 +1066,7 @@
     {
       "id": "log-1783139056352",
       "tanggal": "2026-07-04 04:24:16",
-      "user": "Ust. Reza Firmansyah (Koordinator)",
+      "user": "Beny Siswanto (Koordinator)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Edit Master Data",
       "detail": "Mengedit Akun Pengguna: pelatih"
@@ -1074,7 +1074,7 @@
     {
       "id": "log-1783138987167",
       "tanggal": "2026-07-04 04:23:07",
-      "user": "Ust. Reza Firmansyah (Koordinator)",
+      "user": "Beny Siswanto (Koordinator)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Hapus Master Data",
       "detail": "Menghapus data Ekstrakurikuler ID: ekskul-2"
@@ -1082,7 +1082,7 @@
     {
       "id": "log-1783138956508",
       "tanggal": "2026-07-04 04:22:36",
-      "user": "Ust. Reza Firmansyah (Koordinator)",
+      "user": "Beny Siswanto (Koordinator)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Hapus Master Data",
       "detail": "Menghapus data Ekstrakurikuler ID: ekskul-1"
@@ -1090,7 +1090,7 @@
     {
       "id": "log-1783132078690",
       "tanggal": "2026-07-04 02:27:58",
-      "user": "Ust. Reza Firmansyah",
+      "user": "Beny Siswanto",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Input Nilai Santri",
       "detail": "Memasukkan nilai raport ekskul untuk: Muhammad Zaki Al-Fatih (A (Sangat Baik))"
@@ -1098,7 +1098,7 @@
     {
       "id": "log-1783130889200",
       "tanggal": "2026-07-04 02:08:09",
-      "user": "Ust. Reza Firmansyah (Pembina)",
+      "user": "Beny Siswanto (Pembina)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Manual Presensi",
       "detail": "Memperbarui presensi Khansa Alya Nabila di ekskul Panahan (Archery Club) menjadi [Hadir]"
@@ -1106,7 +1106,7 @@
     {
       "id": "log-1783130839940",
       "tanggal": "2026-07-04 02:07:19",
-      "user": "Ust. Reza Firmansyah (Pembina)",
+      "user": "Beny Siswanto (Pembina)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Manual Presensi",
       "detail": "Memperbarui presensi Ahmad Rayhan Al-Ghifari di ekskul Panahan (Archery Club) menjadi [Sakit]"
@@ -1114,7 +1114,7 @@
     {
       "id": "log-1783130837298",
       "tanggal": "2026-07-04 02:07:17",
-      "user": "Ust. Reza Firmansyah (Pembina)",
+      "user": "Beny Siswanto (Pembina)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Manual Presensi",
       "detail": "Memperbarui presensi Muhammad Zaki Al-Fatih di ekskul Panahan (Archery Club) menjadi [Hadir]"
@@ -1122,7 +1122,7 @@
     {
       "id": "log-1",
       "tanggal": "2026-07-03 18:00:15",
-      "user": "Ustadz Reza (Koordinator)",
+      "user": "Beny Siswanto (Koordinator)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Melakukan Pembaruan Data Siswa",
       "detail": "Menambahkan ekstrakurikuler Robotics ke riwayat santri Muhammad Zaki Al-Fatih."
@@ -1141,7 +1141,7 @@
       "id": "user-admin",
       "username": "admin",
       "password": "admin123",
-      "nama": "Ustadz Reza Firmansyah",
+      "nama": "Beny Siswanto, S.Kom.",
       "role": "Koordinator Ekstrakurikuler"
     },
     {

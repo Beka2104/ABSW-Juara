@@ -411,7 +411,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                       <div>
                         <p className="text-[9px] text-gray-400 font-mono">2. KOORDINATOR</p>
                         <p className="text-[10px] font-bold text-gray-800">
-                          {(selectedDoc.status || "Disetujui") === "Disetujui" ? "Disetujui (Ust. Reza)" : (selectedDoc.status || "Disetujui") === "Ditolak" ? "Ditolak" : "Menunggu Verifikasi"}
+                          {(selectedDoc.status || "Disetujui") === "Disetujui" ? `Disetujui (${currentStudentName || "Pengguna"})` : (selectedDoc.status || "Disetujui") === "Ditolak" ? "Ditolak" : "Menunggu Verifikasi"}
                         </p>
                       </div>
                     </div>
@@ -421,7 +421,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                   {(selectedDoc.status || "Disetujui") === "Disetujui" && (
                     <div className="absolute bottom-4 right-4 flex flex-col items-center border border-emerald-500/30 p-1.5 rounded bg-maroon-500/10 rotate-[-5deg]">
                       <span className="text-[8px] text-maroon-500 font-bold tracking-wider font-mono uppercase">DISETUJUI AEMS</span>
-                      <span className="text-[10px] font-display font-semibold italic text-maroon-700">{selectedDoc.tandaTanganDigital || "Ust. Reza"}</span>
+                      <span className="text-[10px] font-display font-semibold italic text-maroon-700">{selectedDoc.tandaTanganDigital || (currentStudentName || "Pengguna")}</span>
                     </div>
                   )}
                 </div>
