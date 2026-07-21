@@ -97,7 +97,7 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
         waktu: formTime,
         tempat: formVenue,
         pimpinanRapat: (currentStudentName || "Pengguna") ,
-        pesertaHadir: ["Ust. Gozali", "Coach Jaka", "Coach Hendra", "Ust. Wildan"],
+        pesertaHadir: ["Peserta 1", "Peserta 2", "Peserta 3"],
         notulensi: formNotulen
       };
       updatedDb.meetings.push(newM);

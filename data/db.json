@@ -207,7 +207,7 @@
       "ekskulId": "ekskul-1",
       "tanggal": "2026-07-04",
       "siswaId": "siswa-4",
-      "namaSiswa": "Khansa Alya Nabila",
+      "namaSiswa": "Dira",
       "kelas": "XI-E IPA (Santriwati)",
       "asrama": "Gedung Khadijah Kamar 3",
       "waktuMasuk": "09.08",
@@ -233,7 +233,7 @@
       "ekskulId": "ekskul-1",
       "tanggal": "2026-07-04",
       "siswaId": "siswa-1",
-      "namaSiswa": "Muhammad Zaki Al-Fatih",
+      "namaSiswa": "Sahkan",
       "kelas": "XI-A IPA",
       "asrama": "Gedung Shalahuddin Al-Ayyubi Kamar 4",
       "waktuMasuk": "09.07",
@@ -246,7 +246,7 @@
       "ekskulId": "ekskul-1",
       "tanggal": "2026-06-27",
       "siswaId": "siswa-1",
-      "namaSiswa": "Muhammad Zaki Al-Fatih",
+      "namaSiswa": "Sahkan",
       "kelas": "XI-A IPA",
       "asrama": "Gedung Shalahuddin Al-Ayyubi Kamar 4",
       "waktuMasuk": "07:55",
@@ -283,7 +283,7 @@
       "ekskulId": "ekskul-1",
       "tanggal": "2026-06-27",
       "siswaId": "siswa-4",
-      "namaSiswa": "Khansa Alya Nabila",
+      "namaSiswa": "Dira",
       "kelas": "XI-E IPA (Santriwati)",
       "asrama": "Gedung Khadijah Kamar 3",
       "waktuMasuk": "07:48",
@@ -301,7 +301,7 @@
       "ekskulId": "ekskul-2",
       "tanggal": "2026-06-25",
       "siswaId": "siswa-1",
-      "namaSiswa": "Muhammad Zaki Al-Fatih",
+      "namaSiswa": "Sahkan",
       "kelas": "XI-A IPA",
       "asrama": "Gedung Shalahuddin Al-Ayyubi Kamar 4",
       "waktuMasuk": "15:58",
@@ -352,7 +352,7 @@
       "id": "lomba-2",
       "namaLomba": "Olimpiade Robotika Nasional (Indonesian Robotics Olympiad)",
       "penyelenggara": "Kementerian Ristekdikti & Indonesian Robotics Society",
-      "lokasi": "Gedung Balai Kartini, Jakarta",
+      "lokasi": "Gedung Balai Kartini, Pelatih 1rta",
       "tanggal": "2026-09-02",
       "deadline": "2026-08-10",
       "biaya": 750000,
@@ -401,8 +401,8 @@
       "tanggal": "2026-08-26",
       "tempat": "assyifa",
       "peserta": [
-        "Farhan Syihabuddin",
-        "Zaidan Al-Khair"
+        "Sahkan",
+        "Dira"
       ],
       "pendamping": "Beny Siswanto",
       "anggaran": 1500000,
@@ -426,7 +426,7 @@
     {
       "id": "ass-1783132078690",
       "siswaId": "siswa-1",
-      "namaSiswa": "Muhammad Zaki Al-Fatih",
+      "namaSiswa": "Sahkan",
       "kelas": "XI-A IPA",
       "ekskulId": "ekskul-3",
       "kehadiran": 85,
@@ -439,7 +439,7 @@
     {
       "id": "ass-1",
       "pelatihId": "pelatih-1",
-      "namaPelatih": "Ustadz Hardi Supriatna, S.Pd., C.Ar",
+      "namaPelatih": "Ustadz reza, S.Pd., C.Ar",
       "ekskulId": "ekskul-1",
       "tanggal": "2026-06-30",
       "disiplin": 95,
@@ -516,7 +516,7 @@
       ],
       "presensiList": [
         {
-          "nama": "Ustadz H. Gozali, M.Pd. (Kepala Sekolah)",
+          "nama": "Ustadz Beny Siswanto, M.Pd. (Kepala Sekolah)",
           "peran": "Kepala Sekolah",
           "hadir": true
         },
@@ -526,12 +526,12 @@
           "hadir": true
         },
         {
-          "nama": "Ustadz Muhammad Wildan, M.Pd.",
+          "nama": "Ustadz Ahmad, M.Pd.",
           "peran": "Pembina Panahan",
           "hadir": true
         },
         {
-          "nama": "Ustadz Hardi Supriatna",
+          "nama": "Ustadz reza",
           "peran": "Pelatih Panahan",
           "hadir": true
         },
@@ -556,7 +556,7 @@
         {
           "id": "task-2",
           "tugas": "Mempersiapkan busur dan target lapangan panahan",
-          "ditugaskanKepada": "Ustadz Hardi (Pelatih)",
+          "ditugaskanKepada": "reza (Pelatih)",
           "deadline": "2026-07-03",
           "progress": 100,
           "status": "Selesai"
@@ -605,35 +605,35 @@
     },
     {
       "id": "doc-4",
-      "judul": "Biodata Diri - Muhammad Syamil Basayev",
-      "nama": "Biodata_Siswa_Syamil_Basayev.pdf",
+      "judul": "Biodata Diri - Sahkan",
+      "nama": "Biodata_Siswa_Sahkan_Basayev.pdf",
       "tipe": "SOP",
       "kategori": "Biodata Siswa",
       "deskripsi": "Formulir biodata lengkap, rekam kesehatan asrama, dan surat izin orang tua untuk keikutsertaan ekskul Panahan.",
       "ekskulId": "ekskul-1",
       "siswaId": "siswa-1",
-      "namaSiswa": "Muhammad Syamil Basayev",
+      "namaSiswa": "Sahkan",
       "tanggalDibuat": "2026-07-01",
       "tanggalUpload": "2026-07-01",
       "status": "Disetujui",
-      "pengaju": "Siswa (Muhammad Syamil Basayev)",
-      "fileUrl": "/docs/Biodata_Siswa_Syamil.pdf"
+      "pengaju": "Siswa (Sahkan)",
+      "fileUrl": "/docs/Biodata_Siswa_Sahkan.pdf"
     },
     {
       "id": "doc-5",
-      "judul": "Kartu Pelajar & Syarat Lomba Jabar Archery - Khansa Alya Nabila",
-      "nama": "Persyaratan_Lomba_Jabar_Archery_Khansa.pdf",
+      "judul": "Kartu Pelajar & Syarat Lomba Jabar Archery - Dira",
+      "nama": "Persyaratan_Lomba_Jabar_Archery_Dira.pdf",
       "tipe": "SOP",
       "kategori": "Persyaratan Lomba",
       "deskripsi": "Berkas kelengkapan administrasi lomba Jabar Archery Championship, termasuk Kartu Tanda Santri, surat sehat, dan pas foto resmi.",
       "ekskulId": "ekskul-1",
       "siswaId": "siswa-4",
-      "namaSiswa": "Khansa Alya Nabila",
+      "namaSiswa": "Dira",
       "tanggalDibuat": "2026-07-02",
       "tanggalUpload": "2026-07-02",
       "status": "Disetujui",
-      "pengaju": "Siswa (Khansa Alya Nabila)",
-      "fileUrl": "/docs/Syarat_Lomba_Jabar_Khansa.pdf"
+      "pengaju": "Siswa (Dira)",
+      "fileUrl": "/docs/Syarat_Lomba_Jabar_Dira.pdf"
     }
   ],
   "notifications": [
@@ -648,7 +648,7 @@
     {
       "id": "notif-2",
       "tipe": "WhatsApp",
-      "pesan": "INFO LOMBA: Pendaftaran Bogor Open Open Archery ditutup 5 hari lagi! Pastikan kelengkapan berkas siswa Muhammad Zaki dan Khansa sudah siap.",
+      "pesan": "INFO LOMBA: Pendaftaran Bogor Open Open Archery ditutup 5 hari lagi! Pastikan kelengkapan berkas siswa Sahkan dan Dira sudah siap.",
       "tanggal": "2026-07-20 09:12",
       "dibaca": true,
       "pengirim": "Sistem Notifikasi AEMS"
@@ -656,7 +656,7 @@
     {
       "id": "notif-3",
       "tipe": "Email",
-      "pesan": "Hasil Penilaian Kinerja Bulanan Ustadz Hardi Supriatna telah disetujui Kepala Sekolah dengan predikat SANGAT MEMUASKAN.",
+      "pesan": "Hasil Penilaian Kinerja Bulanan Ustadz reza telah disetujui Kepala Sekolah dengan predikat SANGAT MEMUASKAN.",
       "tanggal": "2026-07-01 10:30",
       "dibaca": false,
       "pengirim": "Kepala Sekolah"
@@ -1093,7 +1093,7 @@
       "user": "Beny Siswanto",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Input Nilai Santri",
-      "detail": "Memasukkan nilai raport ekskul untuk: Muhammad Zaki Al-Fatih (A (Sangat Baik))"
+      "detail": "Memasukkan nilai raport ekskul untuk: Sahkan (A (Sangat Baik))"
     },
     {
       "id": "log-1783130889200",
@@ -1101,7 +1101,7 @@
       "user": "Beny Siswanto (Pembina)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Manual Presensi",
-      "detail": "Memperbarui presensi Khansa Alya Nabila di ekskul Panahan (Archery Club) menjadi [Hadir]"
+      "detail": "Memperbarui presensi Dira di ekskul Panahan (Archery Club) menjadi [Hadir]"
     },
     {
       "id": "log-1783130839940",
@@ -1117,7 +1117,7 @@
       "user": "Beny Siswanto (Pembina)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Manual Presensi",
-      "detail": "Memperbarui presensi Muhammad Zaki Al-Fatih di ekskul Panahan (Archery Club) menjadi [Hadir]"
+      "detail": "Memperbarui presensi Sahkan di ekskul Panahan (Archery Club) menjadi [Hadir]"
     },
     {
       "id": "log-1",
@@ -1125,15 +1125,15 @@
       "user": "Beny Siswanto (Koordinator)",
       "peran": "Koordinator Ekstrakurikuler",
       "aktivitas": "Melakukan Pembaruan Data Siswa",
-      "detail": "Menambahkan ekstrakurikuler Robotics ke riwayat santri Muhammad Zaki Al-Fatih."
+      "detail": "Menambahkan ekstrakurikuler Robotics ke riwayat santri Sahkan."
     },
     {
       "id": "log-2",
       "tanggal": "2026-07-03 15:20:44",
-      "user": "Ustadz Hardi (Pelatih)",
+      "user": "reza (Pelatih)",
       "peran": "Pelatih",
       "aktivitas": "Mengisi Presensi Digital",
-      "detail": "Berhasil melakukan presensi masuk manual untuk santriwati Khansa Alya Nabila."
+      "detail": "Berhasil melakukan presensi masuk manual untuk santriwati Dira."
     }
   ],
   "users": [

@@ -65,7 +65,7 @@ export default function JadwalView({ database, setDatabase, currentRole, current
   const handleSendWaReminder = (event: ScheduleEvent) => {
     triggerAlert(`Mengirim pesan WhatsApp pengingat otomatis untuk "${event.judul}" kepada Pelatih & Wali Asrama...`);
     setTimeout(() => {
-      triggerAlert(`✓ WhatsApp Terkirim! "Assalamualaikum Ust., diingatkan esok hari jadwal ${event.judul} jam ${event.jamMulai} di ${event.tempat}."`);
+      triggerAlert(`✓ WhatsApp Terkirim! "Assalamualaikum, diingatkan esok hari jadwal ${event.judul} jam ${event.jamMulai} di ${event.tempat}."`);
     }, 2500);
   };
 

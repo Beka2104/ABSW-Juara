@@ -397,7 +397,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                       <CheckCircle size={15} className="text-maroon-400" />
                       <div>
                         <p className="text-[9px] text-gray-400 font-mono">1. PEMBINA GURU</p>
-                        <p className="text-[10px] font-bold text-gray-800">Disetujui (Ust. Wildan)</p>
+                        <p className="text-[10px] font-bold text-gray-800">Disetujui (Pembina)</p>
                       </div>
                     </div>
                     <div className="border border-border p-2.5 rounded-xl bg-white flex items-center gap-2">

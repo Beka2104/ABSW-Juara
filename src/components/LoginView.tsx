@@ -340,7 +340,7 @@ export default function LoginView({
                     <span className="absolute inset-y-0 left-3.5 flex items-center text-slate-400"><User size={14} /></span>
                     <input
                       type="text"
-                      placeholder="Contoh: Muhammad Zaki Al-Fatih"
+                      placeholder="Contoh: Sahkan"
                       value={loginUsername}
                       onChange={(e) => setLoginUsername(e.target.value)}
                       className={inputClass}

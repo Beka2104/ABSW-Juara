@@ -1452,7 +1452,7 @@ export default function MasterDataView({
                       <input
                         type="text"
                         required
-                        placeholder="Contoh: Ust. Ahmad Fauzi"
+                        placeholder="Contoh: Fulan"
                         value={userForm.nama}
                         onChange={(e) => setUserForm({ ...userForm, nama: e.target.value })}
                         className="w-full px-3 py-2 text-xs rounded-lg border border-gray-200"

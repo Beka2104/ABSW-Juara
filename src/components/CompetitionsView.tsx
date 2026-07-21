@@ -129,7 +129,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
         ekskulId: formEkskulId,
         tanggal: formDate,
         tempat: formVenue,
-        peserta: ["Farhan Syihabuddin", "Zaidan Al-Khair"],
+        peserta: ["Sahkan", "Dira"],
         pendamping: (currentStudentName || "Pengguna") ,
         anggaran: formBudget,
         status: formStatus,
@@ -195,7 +195,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
                   <td style="padding: 8px; font-weight: bold;">${comp.nama}</td>
                   <td style="padding: 8px;">${comp.tanggal}</td>
                   <td style="padding: 8px;">${comp.tempat}</td>
-                  <td style="padding: 8px;">Farhan Syihabuddin, Zaidan Al-Khair</td>
+                  <td style="padding: 8px;">Sahkan, Dira</td>
                 </tr>
               </table>
               <p>Untuk melaksanakan tugas dengan penuh tanggung jawab, menjaga nama baik almamater pesantren, serta mematuhi seluruh SOP perlombaan yang berlaku.</p>
@@ -204,7 +204,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
             <div class="sign">
               Subang, ${new Date().toLocaleDateString("id-ID")}<br>
               Kepala Sekolah SMAIT As-Syifa,<br><br><br><br>
-              <strong>Ust. H. Gozali, S.Pd.I.</strong>
+              <strong>(Kepala Sekolah)</strong>
             </div>
           </body>
         </html>

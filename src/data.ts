@@ -91,7 +91,7 @@ export const initialDatabase: AppDatabase = {
   students: [
     {
       id: "siswa-1",
-      nama: "Muhammad Zaki Al-Fatih",
+      nama: "Sahkan",
       kelas: "XI-A IPA",
       asrama: "Gedung Shalahuddin Al-Ayyubi Kamar 4",
       noHpOrtu: "+6281234567890",
@@ -114,7 +114,7 @@ export const initialDatabase: AppDatabase = {
     },
     {
       id: "siswa-3",
-      nama: "Farhan Syihabuddin",
+      nama: "Sahkan",
       kelas: "X-C IPA",
       asrama: "Gedung Muhammad Al-Fatih Kamar 2",
       noHpOrtu: "+6285356789012",
@@ -125,7 +125,7 @@ export const initialDatabase: AppDatabase = {
     },
     {
       id: "siswa-4",
-      nama: "Khansa Alya Nabila",
+      nama: "Dira",
       kelas: "XI-E IPA (Santriwati)",
       asrama: "Gedung Khadijah Kamar 3",
       noHpOrtu: "+6281167890123",
@@ -149,7 +149,7 @@ export const initialDatabase: AppDatabase = {
   coaches: [
     {
       id: "pelatih-1",
-      nama: "Ustadz Hardi Supriatna, S.Pd., C.Ar",
+      nama: "Ustadz reza, S.Pd., C.Ar",
       keahlian: "Pelatih Panahan Lisensi Nasional (PERPANI)",
       noHp: "+6281312345678",
       email: "hardi.supriatna@assyifa.sch.id",
@@ -212,7 +212,7 @@ export const initialDatabase: AppDatabase = {
   supervisors: [
     {
       id: "pembina-1",
-      nama: "Ustadz Muhammad Wildan, M.Pd.",
+      nama: "Ustadz Ahmad, M.Pd.",
       jabatan: "Kepala Humas & Guru Bahasa Arab",
       kontak: "+628129081230",
       ekskulBinaan: ["Panahan (Archery Club)", "Hadroh & Nasyid El-Syifa"]
@@ -370,7 +370,7 @@ export const initialDatabase: AppDatabase = {
       ekskulId: "ekskul-1",
       tanggal: "2026-06-27",
       siswaId: "siswa-1",
-      namaSiswa: "Muhammad Zaki Al-Fatih",
+      namaSiswa: "Sahkan",
       kelas: "XI-A IPA",
       asrama: "Gedung Shalahuddin Al-Ayyubi Kamar 4",
       waktuMasuk: "07:55",
@@ -399,7 +399,7 @@ export const initialDatabase: AppDatabase = {
       ekskulId: "ekskul-1",
       tanggal: "2026-06-27",
       siswaId: "siswa-4",
-      namaSiswa: "Khansa Alya Nabila",
+      namaSiswa: "Dira",
       kelas: "XI-E IPA (Santriwati)",
       asrama: "Gedung Khadijah Kamar 3",
       waktuMasuk: "07:48",
@@ -413,7 +413,7 @@ export const initialDatabase: AppDatabase = {
       ekskulId: "ekskul-2",
       tanggal: "2026-06-25",
       siswaId: "siswa-1",
-      namaSiswa: "Muhammad Zaki Al-Fatih",
+      namaSiswa: "Sahkan",
       kelas: "XI-A IPA",
       asrama: "Gedung Shalahuddin Al-Ayyubi Kamar 4",
       waktuMasuk: "15:58",
@@ -455,7 +455,7 @@ export const initialDatabase: AppDatabase = {
       id: "lomba-2",
       namaLomba: "Olimpiade Robotika Nasional (Indonesian Robotics Olympiad)",
       penyelenggara: "Kementerian Ristekdikti & Indonesian Robotics Society",
-      lokasi: "Gedung Balai Kartini, Jakarta",
+      lokasi: "Gedung Balai Kartini, Pelatih 1rta",
       tanggal: "2026-09-02",
       deadline: "2026-08-10",
       biaya: 750000,
@@ -486,7 +486,7 @@ export const initialDatabase: AppDatabase = {
     {
       id: "ass-1",
       pelatihId: "pelatih-1",
-      namaPelatih: "Ustadz Hardi Supriatna, S.Pd., C.Ar",
+      namaPelatih: "Ustadz reza, S.Pd., C.Ar",
       ekskulId: "ekskul-1",
       tanggal: "2026-06-30",
       disiplin: 95,
@@ -557,10 +557,10 @@ export const initialDatabase: AppDatabase = {
       tanggal: "2026-06-20",
       undangan: ["Kepala Sekolah", "Koordinator Ekstrakurikuler", "Semua Pembina Ekskul", "Semua Pelatih"],
       presensiList: [
-        { nama: "Ustadz H. Gozali, M.Pd. (Kepala Sekolah)", peran: "Kepala Sekolah", hadir: true },
+        { nama: "Ustadz Beny Siswanto, M.Pd. (Kepala Sekolah)", peran: "Kepala Sekolah", hadir: true },
         { nama: "Beny Siswanto, S.Kom. (Koordinator)", peran: "Koordinator", hadir: true },
-        { nama: "Ustadz Muhammad Wildan, M.Pd.", peran: "Pembina Panahan", hadir: true },
-        { nama: "Ustadz Hardi Supriatna", peran: "Pelatih Panahan", hadir: true },
+        { nama: "Ustadz Ahmad, M.Pd.", peran: "Pembina Panahan", hadir: true },
+        { nama: "Ustadz reza", peran: "Pelatih Panahan", hadir: true },
         { nama: "Ir. Ahmad Sholahudin", peran: "Pelatih Robotika", hadir: false }
       ],
       notulen: "Pertemuan membahas pemantapan kurikulum ekskul berorientasi prestasi dakwah. Ditentukan kuota maksimal setiap ekskul adalah 30-50 anak agar pengawasan asrama tetap efektif. Honorarium pelatih akan ditransfer paling lambat tanggal 5 setiap bulannya.",
@@ -568,7 +568,7 @@ export const initialDatabase: AppDatabase = {
       hasilRapat: "Persetujuan kalender kegiatan tahunan, peluncuran sistem AEMS digital untuk absensi santri, serta penandatanganan pakta integritas disiplin melatih.",
       tugas: [
         { id: "task-1", tugas: "Penyebaran formulir pemilihan ekskul santri baru via AEMS", ditugaskanKepada: "Koordinator Ekskul", deadline: "2026-07-05", progress: 90, status: "Sedang Dikerjakan" },
-        { id: "task-2", tugas: "Mempersiapkan busur dan target lapangan panahan", ditugaskanKepada: "Ustadz Hardi (Pelatih)", deadline: "2026-07-03", progress: 100, status: "Selesai" },
+        { id: "task-2", tugas: "Mempersiapkan busur dan target lapangan panahan", ditugaskanKepada: "reza (Pelatih)", deadline: "2026-07-03", progress: 100, status: "Selesai" },
         { id: "task-3", tugas: "Mengupload berkas SK Mengajar Pelatih Baru", ditugaskanKepada: "Wakasek Kesiswaan", deadline: "2026-07-10", progress: 20, status: "Belum Dimulai" }
       ]
     }
@@ -606,35 +606,35 @@ export const initialDatabase: AppDatabase = {
     },
     {
       id: "doc-4",
-      judul: "Biodata Diri - Muhammad Syamil Basayev",
-      nama: "Biodata_Siswa_Syamil_Basayev.pdf",
+      judul: "Biodata Diri - Sahkan",
+      nama: "Biodata_Siswa_Sahkan_Basayev.pdf",
       tipe: "SOP",
       kategori: "Biodata Siswa",
       deskripsi: "Formulir biodata lengkap, rekam kesehatan asrama, dan surat izin orang tua untuk keikutsertaan ekskul Panahan.",
       ekskulId: "ekskul-1",
       siswaId: "siswa-1",
-      namaSiswa: "Muhammad Syamil Basayev",
+      namaSiswa: "Sahkan",
       tanggalDibuat: "2026-07-01",
       tanggalUpload: "2026-07-01",
       status: "Disetujui",
-      pengaju: "Siswa (Muhammad Syamil Basayev)",
-      fileUrl: "/docs/Biodata_Siswa_Syamil.pdf"
+      pengaju: "Siswa (Sahkan)",
+      fileUrl: "/docs/Biodata_Siswa_Sahkan.pdf"
     },
     {
       id: "doc-5",
-      judul: "Kartu Pelajar & Syarat Lomba Jabar Archery - Khansa Alya Nabila",
-      nama: "Persyaratan_Lomba_Jabar_Archery_Khansa.pdf",
+      judul: "Kartu Pelajar & Syarat Lomba Jabar Archery - Dira",
+      nama: "Persyaratan_Lomba_Jabar_Archery_Dira.pdf",
       tipe: "SOP",
       kategori: "Persyaratan Lomba",
       deskripsi: "Berkas kelengkapan administrasi lomba Jabar Archery Championship, termasuk Kartu Tanda Santri, surat sehat, dan pas foto resmi.",
       ekskulId: "ekskul-1",
       siswaId: "siswa-4",
-      namaSiswa: "Khansa Alya Nabila",
+      namaSiswa: "Dira",
       tanggalDibuat: "2026-07-02",
       tanggalUpload: "2026-07-02",
       status: "Disetujui",
-      pengaju: "Siswa (Khansa Alya Nabila)",
-      fileUrl: "/docs/Syarat_Lomba_Jabar_Khansa.pdf"
+      pengaju: "Siswa (Dira)",
+      fileUrl: "/docs/Syarat_Lomba_Jabar_Dira.pdf"
     }
   ],
   notifications: [
@@ -649,7 +649,7 @@ export const initialDatabase: AppDatabase = {
     {
       id: "notif-2",
       tipe: "WhatsApp",
-      pesan: "INFO LOMBA: Pendaftaran Bogor Open Open Archery ditutup 5 hari lagi! Pastikan kelengkapan berkas siswa Muhammad Zaki dan Khansa sudah siap.",
+      pesan: "INFO LOMBA: Pendaftaran Bogor Open Open Archery ditutup 5 hari lagi! Pastikan kelengkapan berkas siswa Sahkan dan Dira sudah siap.",
       tanggal: "2026-07-20 09:12",
       dibaca: true,
       pengirim: "Sistem Notifikasi AEMS"
@@ -657,7 +657,7 @@ export const initialDatabase: AppDatabase = {
     {
       id: "notif-3",
       tipe: "Email",
-      pesan: "Hasil Penilaian Kinerja Bulanan Ustadz Hardi Supriatna telah disetujui Kepala Sekolah dengan predikat SANGAT MEMUASKAN.",
+      pesan: "Hasil Penilaian Kinerja Bulanan Ustadz reza telah disetujui Kepala Sekolah dengan predikat SANGAT MEMUASKAN.",
       tanggal: "2026-07-01 10:30",
       dibaca: false,
       pengirim: "Kepala Sekolah"
@@ -670,15 +670,15 @@ export const initialDatabase: AppDatabase = {
       user: "Beny Siswanto (Koordinator)",
       peran: "Koordinator Ekstrakurikuler",
       aktivitas: "Melakukan Pembaruan Data Siswa",
-      detail: "Menambahkan ekstrakurikuler Robotics ke riwayat santri Muhammad Zaki Al-Fatih."
+      detail: "Menambahkan ekstrakurikuler Robotics ke riwayat santri Sahkan."
     },
     {
       id: "log-2",
       tanggal: "2026-07-03 15:20:44",
-      user: "Ustadz Hardi (Pelatih)",
+      user: "reza (Pelatih)",
       peran: "Pelatih",
       aktivitas: "Mengisi Presensi Digital",
-      detail: "Berhasil melakukan presensi masuk manual untuk santriwati Khansa Alya Nabila."
+      detail: "Berhasil melakukan presensi masuk manual untuk santriwati Dira."
     }
   ],
   users: [
@@ -693,7 +693,7 @@ export const initialDatabase: AppDatabase = {
       id: "user-kepsek",
       username: "kepsek",
       password: "kepsek123",
-      nama: "Dr. H. Faisal Ahmad",
+      nama: "Beny Siswanto",
       role: "Kepala Sekolah"
     },
     {
@@ -707,7 +707,7 @@ export const initialDatabase: AppDatabase = {
       id: "user-siswa-1",
       username: "zaki",
       password: "zaki123",
-      nama: "Muhammad Zaki Al-Fatih",
+      nama: "Sahkan",
       role: "Siswa",
       linkedEntityId: "siswa-1"
     }
