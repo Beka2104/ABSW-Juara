@@ -11,7 +11,8 @@ import {
   X,
   AlertCircle,
   Upload,
-  Paperclip
+  Paperclip,
+  Trash2
 } from "lucide-react";
 import { AppDatabase, Sop, Role } from "../types";
 
@@ -276,6 +277,17 @@ export default function SopView({ database, setDatabase, currentRole, currentStu
     triggerAlert("✓ Revisi SOP berhasil disimpan dan dipublikasikan.");
   };
 
+  const handleDeleteSop = () => {
+    if (!selectedSop) return;
+    if (window.confirm("Apakah Anda yakin ingin menghapus SOP ini? Tindakan ini permanen.")) {
+      const updatedSops = database.sops.filter((s) => s.id !== selectedSop.id);
+      const updatedDb = { ...database, sops: updatedSops };
+      setDatabase(updatedDb);
+      setSelectedSopId("");
+      triggerAlert("✓ Dokumen SOP berhasil dihapus.");
+    }
+  };
+
   const handleCreateSop = (e: React.FormEvent) => {
     e.preventDefault();
     const newSop: Sop = {
@@ -424,14 +436,24 @@ export default function SopView({ database, setDatabase, currentRole, currentStu
                   </button>
 
                   {!isReadOnly && (
-                    <button
-                      onClick={handleOpenEdit}
-                      className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-white bg-maroon-500 hover:bg-maroon-500 rounded-lg transition-all shadow-sm"
-                      title="Buat Revisi SOP"
-                    >
-                      <Edit2 size={13} />
-                      <span>Revisi</span>
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleOpenEdit}
+                        className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-white bg-maroon-500 hover:bg-maroon-600 rounded-lg transition-all shadow-sm"
+                        title="Buat Revisi SOP"
+                      >
+                        <Edit2 size={13} />
+                        <span>Revisi</span>
+                      </button>
+                      <button
+                        onClick={handleDeleteSop}
+                        className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-all shadow-sm"
+                        title="Hapus SOP"
+                      >
+                        <Trash2 size={13} />
+                        <span>Hapus</span>
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>

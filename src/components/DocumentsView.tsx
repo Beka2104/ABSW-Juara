@@ -184,6 +184,16 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
     }, 1500);
   };
 
+  const handleDeleteDocument = (id: string) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus dokumen ini? Tindakan ini tidak dapat dibatalkan.")) {
+      const updatedDocs = database.documents.filter((d) => d.id !== id);
+      const updatedDb = { ...database, documents: updatedDocs };
+      setDatabase(updatedDb);
+      setSelectedDocId("");
+      triggerAlert("✓ Dokumen berhasil dihapus secara permanen.");
+    }
+  };
+
   const getFilteredDocs = () => {
     const q = searchQuery.toLowerCase();
     return (database.documents || []).filter((d) => {
@@ -358,13 +368,24 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                     </h3>
                     <p className="text-[10px] text-gray-400 mt-0.5 font-mono">Format Dokumen: {selectedDoc.kategori || selectedDoc.tipe || "Proposal"} (.pdf)</p>
                   </div>
-                  <button
-                    onClick={() => triggerAlert("Mengunduh berkas fisik PDF...")}
-                    className="p-2 rounded-xl bg-surface-sunken hover:bg-gray-100 text-gray-500 hover:text-maroon-500 transition-colors"
-                    title="Unduh Berkas Fisik"
-                  >
-                    <Download size={15} />
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => triggerAlert("Mengunduh berkas fisik PDF...")}
+                      className="p-2 rounded-xl bg-surface-sunken hover:bg-gray-100 text-gray-500 hover:text-maroon-500 transition-colors"
+                      title="Unduh Berkas Fisik"
+                    >
+                      <Download size={15} />
+                    </button>
+                    {!isReadOnly && (
+                      <button
+                        onClick={() => handleDeleteDocument(selectedDoc.id)}
+                        className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
+                        title="Hapus Dokumen"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Simulated Document content page preview */}

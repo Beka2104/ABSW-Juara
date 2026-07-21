@@ -11,7 +11,8 @@ import {
   BrainCircuit,
   X,
   Zap,
-  Filter
+  Filter,
+  Trash2
 } from "lucide-react";
 import { AppDatabase, AuditLog, Role } from "../types";
 
@@ -29,6 +30,8 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiReport, setAiReport] = useState<any | null>(null);
 
+  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+
   const getSystemLogs = (): Array<{ id: string; tanggal: string; user: string; level: "INFO" | "WARN" | "ERROR"; kategori: string; detail: string }> => {
     // Combine audit logs and generate some simulated telemetry logs
     const base = database.auditLogs.map((log) => ({
@@ -42,6 +45,12 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
 
     // Seed some warning/error telemetries
     return base;
+  };
+
+  const handleClearLogs = () => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus seluruh log audit?")) {
+      setDatabase({ ...database, auditLogs: [] });
+    }
   };
 
   const allLogs = getSystemLogs();
@@ -189,6 +198,16 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-8 pr-4 py-1.5 text-xs rounded-lg bg-surface-sunken border border-border outline-none placeholder-gray-400 text-gray-800"
               />
+              {!isReadOnly && (
+                <button
+                  onClick={handleClearLogs}
+                  className="absolute inset-y-0 right-1 my-auto h-7 px-2 bg-red-50 hover:bg-red-100 text-red-500 rounded flex items-center gap-1.5 transition-colors"
+                  title="Bersihkan Semua Log"
+                >
+                  <Trash2 size={12} />
+                  <span className="text-[10px] font-bold">Clear</span>
+                </button>
+              )}
             </div>
           </div>
 

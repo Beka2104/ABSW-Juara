@@ -105,11 +105,20 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
     });
 
     setDatabase(updatedDb);
-    triggerAlert(`✓ Nilai Raport untuk "${studentObj.nama}" berhasil disimpan!`);
+    triggerAlert(`✓ Nilai raport ${studentObj?.nama} berhasil disimpan.`);
     
-    // Clear forms
+    // Clear forms manually to avoid hoisting issues
     setGradeStudentId("");
     setGradeEkskulId("");
+  };
+
+  const handleDeleteAssessment = (id: string) => {
+    if (window.confirm("Apakah Anda yakin ingin menghapus nilai ini?")) {
+      const updatedAssessments = database.assessments.filter((a) => a.id !== id);
+      const updatedDb = { ...database, assessments: updatedAssessments };
+      setDatabase(updatedDb);
+      triggerAlert("✓ Data penilaian berhasil dihapus.");
+    }
   };
 
   const handleSaveEvaluation = (e: React.FormEvent) => {
@@ -425,9 +434,19 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
                           </div>
                         </div>
 
-                        <div className="text-right">
-                          <p className="font-mono font-bold text-maroon-500">{ass.nilaiAkhir} / 100</p>
-                          <span className="text-[10px] text-gray-400">{predPrefix}</span>
+                        <div className="text-right flex flex-col items-end gap-1">
+                          <div>
+                            <p className="font-mono font-bold text-maroon-500">{ass.nilaiAkhir} / 100</p>
+                            <span className="text-[10px] text-gray-400">{predPrefix}</span>
+                          </div>
+                          {!isReadOnly && (
+                            <button
+                              onClick={() => handleDeleteAssessment(ass.id)}
+                              className="text-[10px] text-red-400 hover:text-red-600 font-bold"
+                            >
+                              Hapus
+                            </button>
+                          )}
                         </div>
                       </div>
                     );
