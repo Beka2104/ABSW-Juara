@@ -9,7 +9,8 @@ import {
   BookOpen,
   Printer,
   ChevronRight,
-  AlertCircle
+  AlertCircle,
+  Trash2
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 import { AppDatabase, Assessment, Evaluation, Role } from "../types";
@@ -547,6 +548,7 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
                       <th className="p-3 text-center">Keterampilan</th>
                       <th className="p-3 text-center">Sikap</th>
                       <th className="p-3 text-right">Nilai Akhir</th>
+                      {!isReadOnly && <th className="p-3 text-right">Aksi</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50 text-gray-700">
@@ -562,6 +564,17 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
                             <td className="p-3 text-center">{ass.keterampilan}</td>
                             <td className="p-3 text-center">{ass.sikap}</td>
                             <td className="p-3 text-right font-bold text-maroon-500">{ass.nilaiAkhir} ({ass.predikat ? ass.predikat.split(" ")[0] : ""})</td>
+                            {!isReadOnly && (
+                              <td className="p-3 text-right">
+                                <button
+                                  onClick={() => handleDeleteAssessment(ass.id)}
+                                  className="text-red-400 hover:text-red-600 p-1"
+                                  title="Hapus Nilai"
+                                >
+                                  <Trash2 size={13} />
+                                </button>
+                              </td>
+                            )}
                           </tr>
                         );
                       })}
