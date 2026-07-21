@@ -698,6 +698,22 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
               )}
 
               <div className="pt-3 border-t border-border flex justify-end gap-2.5">
+                {selectedCompetition && !isReadOnly && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm("Hapus delegasi lomba ini?")) {
+                        const updated = database.competitions.filter((c) => c.id !== selectedCompetition.id);
+                        setDatabase({ ...database, competitions: updated });
+                        setShowFormModal(false);
+                        triggerAlert("✓ Delegasi berhasil dihapus.");
+                      }
+                    }}
+                    className="mr-auto px-3 py-2 text-xs font-bold text-red-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all"
+                  >
+                    Hapus
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => {
