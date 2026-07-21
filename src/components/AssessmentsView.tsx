@@ -55,13 +55,7 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
   };
 
   // Recharts Progress Mock data
-  const trendData = [
-    { semester: "Sem 1 2024", score: 72 },
-    { semester: "Sem 2 2024", score: 78 },
-    { semester: "Sem 1 2025", score: 84 },
-    { semester: "Sem 2 2025", score: 81 },
-    { semester: "Sem 1 2026", score: 88 }
-  ];
+  const trendData: any[] = [];
 
   // Grade allocator logic
   const calculateGrade = (avg: number): string => {

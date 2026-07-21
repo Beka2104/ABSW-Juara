@@ -41,33 +41,7 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
     }));
 
     // Seed some warning/error telemetries
-    return [
-      {
-        id: "sys-1",
-        tanggal: "2026-07-03 16:45:12",
-        user: "System Daemon",
-        level: "WARN",
-        kategori: "Absensi Alert",
-        detail: "Santri Ahmad Rayhan (X-B) terdeteksi Alpa 2 kali berturut-turut pada ekskul Robotics."
-      },
-      {
-        id: "sys-2",
-        tanggal: "2026-07-03 15:30:00",
-        user: "WhatsApp API Gateway",
-        level: "ERROR",
-        kategori: "SMS Broadcast",
-        detail: "Gagal mengirim SMS OTP ke nomor +628123288. Provider timeouts."
-      },
-      {
-        id: "sys-3",
-        tanggal: "2026-07-03 14:12:05",
-        user: "Database Engine",
-        level: "INFO",
-        kategori: "Auto Backup",
-        detail: "Backup rutin sukses disimpan di Cloud Storage. Size: 4.8MB."
-      },
-      ...base
-    ];
+    return base;
   };
 
   const allLogs = getSystemLogs();
