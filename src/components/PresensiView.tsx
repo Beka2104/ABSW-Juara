@@ -33,6 +33,7 @@ export default function PresensiView({ database, setDatabase, currentRole, curre
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -191,6 +192,10 @@ export default function PresensiView({ database, setDatabase, currentRole, curre
 
   // Delete a specific attendance log
   const handleDeleteRecord = (id: string) => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     if (isReadOnly) {
       triggerAlert("Akses Ditolak: Otoritas akun tidak cukup.");
       return;
@@ -670,13 +675,13 @@ export default function PresensiView({ database, setDatabase, currentRole, curre
                         </span>
 
                         {!isReadOnly && (
-                          <button
+                          <>{canDelete && ( <button
                             onClick={() => handleDeleteRecord(rec.id)}
                             className="p-1 rounded text-slate-300 hover:text-navy-500 hover:bg-navy-50 transition-colors cursor-pointer"
                             title="Hapus Catatan Presensi"
                           >
                             <Trash2 size={11} />
-                          </button>
+                          </button> )}</>
                         )}
                       </div>
                     </div>

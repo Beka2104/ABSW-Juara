@@ -46,6 +46,7 @@ export default function JadwalView({ database, setDatabase, currentRole, current
   const [isSyncing, setIsSyncing] = useState(false);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -582,6 +583,7 @@ export default function JadwalView({ database, setDatabase, currentRole, current
                   <button
                     type="button"
                     onClick={() => {
+                      if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) { alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini."); return; }
                       if (window.confirm("Hapus agenda ini?")) {
                         const updated = database.schedules.filter((s) => s.id !== selectedEvent.id);
                         setDatabase({ ...database, schedules: updated });

@@ -31,6 +31,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -185,6 +186,10 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
   };
 
   const handleDeleteDocument = (id: string) => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     if (window.confirm("Apakah Anda yakin ingin menghapus dokumen ini? Tindakan ini tidak dapat dibatalkan.")) {
       const updatedDocs = database.documents.filter((d) => d.id !== id);
       const updatedDb = { ...database, documents: updatedDocs };
@@ -377,13 +382,13 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                       <Download size={15} />
                     </button>
                     {!isReadOnly && (
-                      <button
+                      <>{canDelete && ( <button
                         onClick={() => handleDeleteDocument(selectedDoc.id)}
                         className="p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 transition-colors"
                         title="Hapus Dokumen"
                       >
                         <Trash2 size={15} />
-                      </button>
+                      </button> )}</>
                     )}
                   </div>
                 </div>

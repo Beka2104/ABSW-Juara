@@ -52,6 +52,7 @@ export default function SopView({ database, setDatabase, currentRole, currentStu
 
   const selectedSop = database.sops.find((s) => s.id === selectedSopId);
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const handleCreateFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -278,6 +279,10 @@ export default function SopView({ database, setDatabase, currentRole, currentStu
   };
 
   const handleDeleteSop = () => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     if (!selectedSop) return;
     if (window.confirm("Apakah Anda yakin ingin menghapus SOP ini? Tindakan ini permanen.")) {
       const updatedSops = database.sops.filter((s) => s.id !== selectedSop.id);
@@ -445,14 +450,14 @@ export default function SopView({ database, setDatabase, currentRole, currentStu
                         <Edit2 size={13} />
                         <span>Revisi</span>
                       </button>
-                      <button
+                      <>{canDelete && ( <button
                         onClick={handleDeleteSop}
                         className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-bold text-red-500 bg-red-50 hover:bg-red-100 rounded-lg transition-all shadow-sm"
                         title="Hapus SOP"
                       >
                         <Trash2 size={13} />
                         <span>Hapus</span>
-                      </button>
+                      </button> )}</>
                     </div>
                   )}
                 </div>

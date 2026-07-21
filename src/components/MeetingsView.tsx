@@ -24,6 +24,7 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -52,6 +53,10 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
   };
 
   const handleDelete = (id: string) => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     if (window.confirm("Hapus berita acara rapat ini?")) {
       const updated = database.meetings.filter((m) => m.id !== id);
       const updatedDb = { ...database, meetings: updated };
@@ -238,7 +243,7 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
                       >
                         <Edit2 size={9} />
                       </button>
-                      <button
+                      <>{canDelete && ( <button
                         onClick={(e) => {
                           e.stopPropagation();
                           handleDelete(m.id);
@@ -246,7 +251,7 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
                         className="p-1 rounded bg-slate-100 text-navy-500"
                       >
                         <Trash2 size={9} />
-                      </button>
+                      </button> )}</>
                     </div>
                   )}
                 </div>

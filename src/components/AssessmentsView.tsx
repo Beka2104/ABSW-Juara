@@ -49,6 +49,7 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -114,6 +115,10 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
   };
 
   const handleDeleteAssessment = (id: string) => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     if (window.confirm("Apakah Anda yakin ingin menghapus nilai ini?")) {
       const updatedAssessments = database.assessments.filter((a) => a.id !== id);
       const updatedDb = { ...database, assessments: updatedAssessments };
@@ -441,12 +446,12 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
                             <span className="text-[10px] text-gray-400">{predPrefix}</span>
                           </div>
                           {!isReadOnly && (
-                            <button
+                            <>{canDelete && ( <button
                               onClick={() => handleDeleteAssessment(ass.id)}
                               className="text-[10px] text-red-400 hover:text-red-600 font-bold"
                             >
                               Hapus
-                            </button>
+                            </button> )}</>
                           )}
                         </div>
                       </div>
@@ -566,13 +571,13 @@ export default function AssessmentsView({ database, setDatabase, currentRole, in
                             <td className="p-3 text-right font-bold text-maroon-500">{ass.nilaiAkhir} ({ass.predikat ? ass.predikat.split(" ")[0] : ""})</td>
                             {!isReadOnly && (
                               <td className="p-3 text-right">
-                                <button
+                                <>{canDelete && ( <button
                                   onClick={() => handleDeleteAssessment(ass.id)}
                                   className="text-red-400 hover:text-red-600 p-1"
                                   title="Hapus Nilai"
                                 >
                                   <Trash2 size={13} />
-                                </button>
+                                </button> )}</>
                               </td>
                             )}
                           </tr>

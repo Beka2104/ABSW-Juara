@@ -49,6 +49,7 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
   const [isUploading, setIsUploading] = useState(false);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -81,6 +82,10 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
   };
 
   const handleDelete = (id: string) => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     if (window.confirm("Apakah Anda yakin ingin menghapus data perlombaan ini?")) {
       const updated = database.competitions.filter((c) => c.id !== id);
       const updatedDb = { ...database, competitions: updated };
@@ -559,12 +564,12 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
                         >
                           <Edit2 size={12} />
                         </button>
-                        <button
+                        <>{canDelete && ( <button
                           onClick={() => handleDelete(comp.id)}
                           className="p-1.5 rounded-lg border border-gray-200 bg-white text-gray-500 hover:text-navy-500 transition-colors"
                         >
                           <Trash2 size={12} />
-                        </button>
+                        </button> )}</>
                       </>
                     )}
                   </div>
@@ -698,12 +703,12 @@ export default function CompetitionsView({ database, setDatabase, currentRole, c
               )}
 
               <div className="pt-3 border-t border-border flex justify-end gap-2.5">
-                {selectedCompetition && !isReadOnly && (
+                {editId && !isReadOnly && (
                   <button
                     type="button"
                     onClick={() => {
                       if (window.confirm("Hapus delegasi lomba ini?")) {
-                        const updated = database.competitions.filter((c) => c.id !== selectedCompetition.id);
+                        const updated = database.competitions.filter((c) => c.id !== editId);
                         setDatabase({ ...database, competitions: updated });
                         setShowFormModal(false);
                         triggerAlert("✓ Delegasi berhasil dihapus.");

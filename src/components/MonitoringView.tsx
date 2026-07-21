@@ -31,6 +31,7 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
   const [aiReport, setAiReport] = useState<any | null>(null);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const getSystemLogs = (): Array<{ id: string; tanggal: string; user: string; level: "INFO" | "WARN" | "ERROR"; kategori: string; detail: string }> => {
     // Combine audit logs and generate some simulated telemetry logs

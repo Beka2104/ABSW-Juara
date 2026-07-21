@@ -63,6 +63,7 @@ export default function MasterDataView({
   });
 
   const isReadOnly = ["Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
+  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const resetForms = () => {
     setEditId(null);
@@ -114,6 +115,10 @@ export default function MasterDataView({
   };
 
   const handleDelete = (type: string, id: string) => {
+    if (["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole)) {
+      alert("Maaf, hak akses Anda dibatasi. Anda tidak dapat menghapus data ini.");
+      return;
+    }
     setConfirmModal({
       isOpen: true,
       action: "delete",
@@ -810,13 +815,13 @@ export default function MasterDataView({
                         <Edit2 size={12} />
                       </button>
                       {!["Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole) && (
-                        <button
+                        <>{canDelete && ( <button
                           onClick={() => handleDelete("ekskul", e.id)}
                           className="p-1.5 rounded-lg bg-white border border-gray-200 hover:text-navy-500 transition-colors"
                           title="Hapus"
                         >
                           <Trash2 size={12} />
-                        </button>
+                        </button> )}</>
                       )}
                     </>
                   )}
@@ -909,12 +914,12 @@ export default function MasterDataView({
                               >
                                 <Edit2 size={12} />
                               </button>
-                              <button
+                              <>{canDelete && ( <button
                                 onClick={() => handleDelete("siswa", s.id)}
                                 className="p-1.5 rounded-lg border border-border hover:text-navy-500 transition-colors bg-white"
                               >
                                 <Trash2 size={12} />
-                              </button>
+                              </button> )}</>
                             </div>
                           </td>
                         )}
@@ -977,12 +982,12 @@ export default function MasterDataView({
                     >
                       <Edit2 size={12} />
                     </button>
-                    <button
+                    <>{canDelete && ( <button
                       onClick={() => handleDelete("pelatih", c.id)}
                       className="p-1.5 rounded-lg border border-gray-200 hover:text-navy-500 transition-colors bg-white"
                     >
                       <Trash2 size={12} />
-                    </button>
+                    </button> )}</>
                   </div>
                 )}
               </div>
@@ -1039,12 +1044,12 @@ export default function MasterDataView({
                     >
                       <Edit2 size={12} />
                     </button>
-                    <button
+                    <>{canDelete && ( <button
                       onClick={() => handleDelete("pembina", p.id)}
                       className="p-1.5 rounded-lg border border-gray-200 hover:text-navy-500 transition-colors bg-white"
                     >
                       <Trash2 size={12} />
-                    </button>
+                    </button> )}</>
                   </div>
                 )}
               </div>
@@ -1109,13 +1114,13 @@ export default function MasterDataView({
                           <Edit2 size={12} />
                         </button>
                         {u.username !== "reza" && (
-                          <button
+                          <>{canDelete && ( <button
                             onClick={() => handleDelete("akun", u.id)}
                             className="p-1.5 rounded-lg border border-border hover:text-navy-500 transition-colors bg-white"
                             title="Hapus Akun"
                           >
                             <Trash2 size={12} />
-                          </button>
+                          </button> )}</>
                         )}
                       </div>
                     </td>
