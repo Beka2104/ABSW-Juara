@@ -23,7 +23,7 @@ export default function MeetingsView({ database, setDatabase, currentRole, curre
 
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
-  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah", "Pelatih"].includes(currentRole);
   const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {

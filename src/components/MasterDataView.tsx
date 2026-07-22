@@ -62,7 +62,7 @@ export default function MasterDataView({
     nama: "", username: "", password: "", role: "Siswa" as Role, linkedEntityId: ""
   });
 
-  const isReadOnly = ["Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
+  const isReadOnly = ["Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah", "Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole);
   const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const resetForms = () => {

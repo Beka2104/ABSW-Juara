@@ -31,7 +31,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
-  const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
+  const canApproveDocument = ["Koordinator Ekstrakurikuler", "Pembina Ekstrakurikuler"].includes(currentRole);
 
   const triggerAlert = (msg: string) => {
     setAlertMsg(msg);
@@ -453,7 +453,7 @@ export default function DocumentsView({ database, setDatabase, currentRole, curr
                 </div>
 
                 {/* Digital Signature Pad activator and buttons */}
-                {(selectedDoc.status || "Disetujui") === "Pending" && !isReadOnly && (
+                {(selectedDoc.status || "Disetujui") === "Pending" && canApproveDocument && (
                   <div className="border border-border p-4 rounded-2xl bg-surface-sunken/20 space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-mono font-bold text-gray-400 uppercase tracking-widest flex items-center gap-1">

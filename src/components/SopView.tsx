@@ -51,7 +51,7 @@ export default function SopView({ database, setDatabase, currentRole, currentStu
   const [alertMsg, setAlertMsg] = useState<string | null>(null);
 
   const selectedSop = database.sops.find((s) => s.id === selectedSopId);
-  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah", "Pelatih", "Pembina Ekstrakurikuler"].includes(currentRole);
   const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const handleCreateFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

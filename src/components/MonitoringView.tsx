@@ -30,7 +30,7 @@ export default function MonitoringView({ database, setDatabase, currentRole }: M
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [aiReport, setAiReport] = useState<any | null>(null);
 
-  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah"].includes(currentRole);
+  const isReadOnly = ["Orang Tua", "Siswa", "Kepala Sekolah", "Pelatih"].includes(currentRole);
   const canDelete = !["Pelatih", "Pembina Ekstrakurikuler", "Orang Tua", "Siswa", "Wali Kelas", "Kepala Sekolah"].includes(currentRole);
 
   const getSystemLogs = (): Array<{ id: string; tanggal: string; user: string; level: "INFO" | "WARN" | "ERROR"; kategori: string; detail: string }> => {
