@@ -1495,6 +1495,7 @@ export default function MasterDataView({
                         <option value="Koordinator Ekstrakurikuler">Admin / Koordinator (Akses Penuh)</option>
                         <option value="Kepala Sekolah">Kepala Sekolah (Monitoring Saja)</option>
                         <option value="Pembina Ekstrakurikuler">Pembina Ekstrakurikuler (Presensi & Evaluasi)</option>
+                        <option value="Pelatih">Pelatih (Manajemen Ekstrakurikuler)</option>
                         <option value="Siswa">Siswa (Pendaftaran & Presensi Mandiri)</option>
                       </select>
                     </div>
